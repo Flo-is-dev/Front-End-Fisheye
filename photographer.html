@@ -11,13 +11,75 @@
 
 <body>
     <header>
-        <img src="assets/images/logo.png" class="logo" />
+        <a href="./index.html"><img src="assets/images/logo.png" class="logo" /></a>
     </header>
     <main id="main">
         <div class="photograph-header">
+            <div class="photograph-header-info">
+                <h1>Mimi keel</h1>
+                <h3>London,UK</h3>
+                <p>Voir le beau dans le quotidien</p>
+            </div>
             <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+            <img src="./assets/photographers/Photographers ID Photos/MimiKeel.jpg" alt="photo de Mimi Kell">
+        </div>
+        <div class="photograph-tri">
+
+            <form>
+                <label for="">Trié par</label>
+                <select id="tri">
+                    <option value="Popularité">Popularité</option>
+                    <option value="Date">Date</option>
+                    <option value="Titre">Titre</option>
+
+                </select>
+            </form>
+
+            <div class="photo-container">
+
+                <div class="photo-container-card">
+                    <img src="./assets/photographers/Ellie Rose/Architecture_Cross_Bar.jpg" alt="">
+                    <div class="photo-card-info">
+                        <p>Arc-en-cie</p> <span>11</span> <i></i>
+                    </div>
+                </div>
+                <div class="photo-container-card">
+                    <img src="./assets/photographers/Ellie Rose/Architecture_Cross_Bar.jpg" alt="">
+                    <div class="photo-card-info">
+                        <p>Arc-en-cie</p> <span>11</span> <i></i>
+                    </div>
+                </div>
+                <div class="photo-container-card">
+                    <img src="./assets/photographers/Ellie Rose/Architecture_Cross_Bar.jpg" alt="">
+                    <div class="photo-card-info">
+                        <p>Arc-en-cie</p> <span>11</span> <i></i>
+                    </div>
+                </div>
+                <div class="photo-container-card">
+                    <img src="./assets/photographers/Ellie Rose/Architecture_Cross_Bar.jpg" alt="">
+                    <div class="photo-card-info">
+                        <p>Arc-en-cie</p> <span>11</span> <i></i>
+                    </div>
+                </div>
+                <div class="photo-container-card">
+                    <img src="./assets/photographers/Ellie Rose/Architecture_Cross_Bar.jpg" alt="">
+                    <div class="photo-card-info">
+                        <p>Arc-en-cie</p> <span>11</span> <i></i>
+                    </div>
+                </div>
+                <div class="photo-container-card">
+                    <img src="./assets/photographers/Ellie Rose/Architecture_Cross_Bar.jpg" alt="">
+                    <div class="photo-card-info">
+                        <p>Arc-en-cie</p> <span>11</span> <i></i>
+                    </div>
+                </div>
+
+
+            </div>
         </div>
     </main>
+
+    <!-- modal de formulaire ouverte quand on clique sur contactez-moi button -->
     <div id="contact_modal">
         <div class="modal">
             <header>
@@ -25,6 +87,7 @@
                 <img src="assets/icons/close.svg" onclick="closeModal()" />
             </header>
             <form>
+
                 <div>
                     <label>Prénom</label>
                     <input />

@@ -54,29 +54,46 @@ a:visited {
   flex-direction: column;
 }
 
-.photographer_section article h2 {
+.photographer_section article h2,
+.photograph-header h1 {
   color: #d3573c;
   font-size: 36px;
   text-align: center;
   font-weight: 400;
 }
 
-.photographer_section article h3 {
+.photograph-header h1 {
+  font-size: 64px;
+}
+
+.photographer_section article h3,
+.photograph-header h3 {
   color: #d3573c;
   font-size: 13px;
   font-weight: 400;
 }
+
+.photograph-header h3 {
+  font-size: 24px;
+}
+
 .photographer_section article h4 {
   color: #757575;
   font-size: 9px;
   font-weight: 400;
 }
 
-.photographer_section article p {
+.photographer_section article p,
+.photograph-header p {
   color: #000;
   font-size: 10px;
   font-weight: 400;
 }
+
+.photograph-header p {
+  font-size: 18px;
+}
+
 .photographer_section a {
   display: flex;
   justify-content: center;
@@ -84,9 +101,55 @@ a:visited {
   flex-direction: column;
 }
 
-.photographer_section img {
+.photographer_section img,
+.photograph-header img {
   height: 200px;
   width: 200px;
   border-radius: 150px;
   object-fit: cover;
+}
+
+.photograph-header {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  align-items: center;
+}
+
+/* *------buton de tri ------------- */
+.photograph-tri form {
+  display: flex;
+  flex-direction: row;
+  margin: 20px 100px 58px;
+}
+
+.photograph-tri label {
+  font-size: 18px;
+  font-weight: 700;
+  margin-right: 25px;
+}
+
+.photograph-tri select {
+  background-color: #901c1c;
+  color: #fff;
+  border: none;
+  padding: 7px 20px;
+  border-radius: 5px;
+}
+
+.photo-container {
+  margin: 0 100px 50px 100px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5%;
+}
+
+.photo-container img {
+  width: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.photo-card-info {
+  display: flex;
 }
