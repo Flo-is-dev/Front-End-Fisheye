@@ -6,6 +6,9 @@
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
     <title>Fisheye - photographe </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -15,13 +18,13 @@
     </header>
     <main id="main">
         <div class="photograph-header">
-            <div class="photograph-header-info">
+            <!-- <div class="photograph-header-info">
                 <h1>Mimi keel</h1>
                 <h3>London,UK</h3>
                 <p>Voir le beau dans le quotidien</p>
             </div>
             <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
-            <img src="./assets/photographers/Photographers ID Photos/MimiKeel.jpg" alt="photo de Mimi Kell">
+            <img src="./assets/photographers/Photographers ID Photos/MimiKeel.jpg" alt="photo de Mimi Kell"> -->
         </div>
         <div class="photograph-tri">
 
@@ -37,65 +40,54 @@
 
             <div class="photo-container">
 
-                <div class="photo-container-card">
+                <!-- <div class="photo-container-card">
                     <img src="./assets/photographers/Ellie Rose/Architecture_Cross_Bar.jpg" alt="">
                     <div class="photo-card-info">
-                        <p>Arc-en-cie</p> <span>11</span> <i></i>
+                        <p>Arc-en-cie</p> <span>11 <i class="fa-solid fa-heart"></i></span>
                     </div>
-                </div>
-                <div class="photo-container-card">
-                    <img src="./assets/photographers/Ellie Rose/Architecture_Cross_Bar.jpg" alt="">
-                    <div class="photo-card-info">
-                        <p>Arc-en-cie</p> <span>11</span> <i></i>
-                    </div>
-                </div>
-                <div class="photo-container-card">
-                    <img src="./assets/photographers/Ellie Rose/Architecture_Cross_Bar.jpg" alt="">
-                    <div class="photo-card-info">
-                        <p>Arc-en-cie</p> <span>11</span> <i></i>
-                    </div>
-                </div>
-                <div class="photo-container-card">
-                    <img src="./assets/photographers/Ellie Rose/Architecture_Cross_Bar.jpg" alt="">
-                    <div class="photo-card-info">
-                        <p>Arc-en-cie</p> <span>11</span> <i></i>
-                    </div>
-                </div>
-                <div class="photo-container-card">
-                    <img src="./assets/photographers/Ellie Rose/Architecture_Cross_Bar.jpg" alt="">
-                    <div class="photo-card-info">
-                        <p>Arc-en-cie</p> <span>11</span> <i></i>
-                    </div>
-                </div>
-                <div class="photo-container-card">
-                    <img src="./assets/photographers/Ellie Rose/Architecture_Cross_Bar.jpg" alt="">
-                    <div class="photo-card-info">
-                        <p>Arc-en-cie</p> <span>11</span> <i></i>
-                    </div>
-                </div>
+                </div> -->
+
 
 
             </div>
         </div>
     </main>
 
-    <!-- modal de formulaire ouverte quand on clique sur contactez-moi button -->
-    <div id="contact_modal">
-        <div class="modal">
-            <header>
-                <h2>Contactez-moi</h2>
-                <img src="assets/icons/close.svg" onclick="closeModal()" />
-            </header>
-            <form>
-
-                <div>
-                    <label>Prénom</label>
-                    <input />
-                </div>
-                <button class="contact_button">Envoyer</button>
-            </form>
-        </div>
+    <!-- Card des likes  -->
+    <div class="like-card">
+        <div class="like-card-number">297 081 <i class="fa-solid fa-heart"></i></div>
+        <div class="like-card-price">300€/ jour</div>
     </div>
+
+    <!-- modal de formulaire ouverte quand on clique sur contactez-moi button -->*
+    <aside>
+        <div class="overlay-modal"></div>
+        <div id="contact_modal">
+            <div class="modal">
+                <header>
+                    <h2>Contactez-moi <br> Mimi Keel</h2>
+                    <img src="assets/icons/close.svg" onclick="closeModal()" />
+
+                </header>
+                <form>
+
+                    <div>
+                        <label>Prénom</label>
+                        <input type="text" id="firstname">
+                        <label>Nom</label>
+                        <input type="text" id="lastname">
+                        <label>Email</label>
+                        <input type="email" name="" id="email">
+                        <label>Votre message</label>
+                        <textarea name="" id="message" cols="" rows="4"></textarea>
+                    </div>
+                    <button class="contact_button">Envoyer</button>
+                </form>
+            </div>
+        </div>
+    </aside>
+
+
     <script src="/scripts/pages/photographer.js"></script>
     <script src="/scripts/utils/contactForm.js"></script>
 </body>

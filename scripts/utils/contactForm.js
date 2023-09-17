@@ -1,9 +1,14 @@
+const overlay = document.querySelector(".overlay-modal");
+const modal = document.getElementById("contact_modal");
+
 function displayModal() {
-    const modal = document.getElementById("contact_modal");
-	modal.style.display = "block";
+  modal.style.display = "block";
+  overlay.style.opacity = 1;
+  overlay.style.visibility = "visible";
 }
 
 function closeModal() {
-    const modal = document.getElementById("contact_modal");
-    modal.style.display = "none";
+  modal.style.display = "none";
+  overlay.style.opacity = 0;
+  overlay.style.visibility = "hidden";
 }

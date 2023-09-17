@@ -116,11 +116,20 @@ a:visited {
   align-items: center;
 }
 
+.photograph-header-info {
+  padding-left: 50px;
+}
+.photograph-header-info h3 {
+  margin-bottom: 15px;
+}
+
 /* *------buton de tri ------------- */
 .photograph-tri form {
   display: flex;
   flex-direction: row;
-  margin: 20px 100px 58px;
+  align-items: center;
+  margin: 20px 100px 48px;
+  height: 60px;
 }
 
 .photograph-tri label {
@@ -148,8 +157,35 @@ a:visited {
   width: 100%;
   object-fit: cover;
   cursor: pointer;
+  aspect-ratio: 1/1;
 }
 
 .photo-card-info {
   display: flex;
+  justify-content: space-between;
+  color: #901c1c;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.photo-card-info i {
+  cursor: pointer;
+  font-size: 21px;
+}
+
+/* *----LIKE-CARD--------------------------- */
+
+.like-card {
+  position: fixed;
+  bottom: -1px;
+  right: 5%;
+  height: 74px;
+  width: 376px;
+  border-radius: 5px;
+  background: #db8876;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 24px;
+  font-weight: 500;
 }
