@@ -171,6 +171,7 @@ a:visited {
 .photo-card-info i {
   cursor: pointer;
   font-size: 21px;
+  margin-left: 10px;
 }
 
 /* *----LIKE-CARD--------------------------- */

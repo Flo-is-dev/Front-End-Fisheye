@@ -65,10 +65,6 @@ async function getPhotographers() {
 
     // ! 1) injection des photo de la page photographer
 
-    // TODO, créer un tableau dans le lequel on push tout les "media" avec le photographerId de la page. Puis on parcours ce tableau avec une boucle "for" dans laquelle on inject en innerHTML les images.
-
-    console.log("l'id est", param);
-
     // Tableau qui va contenir tous les index des photo d'un photographe
     const photographerMedia = [];
 
@@ -111,7 +107,7 @@ async function getPhotographers() {
           <div class="photo-card-info">
           <p>${photographerMedia[i].title}</p> <span>${
           photographerMedia[i].likes
-        }<i class="fa-solid fa-heart"></i></span>
+        } <i class="fa-regular fa-heart"></i></span>
          </div>
         </div>
       `;
@@ -137,9 +133,7 @@ async function getPhotographers() {
 
     // TODO, grace au tableau du dessus, additionner tous les likes dans une constante qu'on va innerHTML dans la like-card
 
-    //  ! 3) modal inscription à mettre en absolute et en dynamique
-
-    // !4) Tri activable
+    // ! 3) Tri activable
   } catch (error) {
     console.log(error, "erreur");
   }
@@ -167,7 +161,3 @@ async function init() {
 }
 
 init();
-
-// -------------------------------------------------
-// -------MODAL D'INSCRIPTION
-// -------------------------------------------------
