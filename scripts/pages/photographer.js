@@ -68,7 +68,7 @@ async function getPhotographers() {
     // Tableau qui va contenir tous les index des photo d'un photographe
     const photographerMedia = [];
 
-    console.log(responseJS.media[0].photographerId);
+    // console.log(responseJS.media[0].photographerId);
 
     for (let i = 0; i < responseJS.media.length; i++) {
       if (responseJS.media[i].photographerId === Number(param)) {
@@ -106,9 +106,12 @@ async function getPhotographers() {
          video.
         </video>
           <div class="photo-card-info">
-          <p>${photographerMedia[i].title}</p> <span>${
-          photographerMedia[i].likes
-        } <i class="fa-regular fa-heart like"></i></span>
+          <p>${photographerMedia[i].title}</p> 
+          <span>${
+            photographerMedia[i].likes
+          }  <i class="fa-regular fa-heart like " media-id=${
+          photographerMedia[i].id
+        } ></i></span>
          </div>
         </div>
       `;
@@ -121,9 +124,12 @@ async function getPhotographers() {
           photographerMedia[i].title
         }" />
           <div class="photo-card-info">
-          <p>${photographerMedia[i].title}</p> <span>${
-          photographerMedia[i].likes
-        }<i class="fa-regular fa-heart like" ></i></span>
+          <p>${photographerMedia[i].title}</p>
+          <span>${
+            photographerMedia[i].likes
+          }<i class="fa-regular fa-heart like" media-id=${
+          photographerMedia[i].id
+        }></i></span>
          </div>
         </div>
       `;
@@ -132,53 +138,77 @@ async function getPhotographers() {
 
     // ! 2) injection des likes
 
-    // TODO, grace au tableau du dessus, additionner tous les likes dans une constante qu'on va innerHTML dans la like-card
-
     // *---- CLASS LIKE -------------------------------
     const like = document.querySelectorAll(".like");
     const likeCard = document.querySelector(".like-card");
 
-    // AddedLike sera un tableau qui regroupera les ID des bouton cliqués
-    let AddedLike = 1;
-
-    // currentLike represente le nombre de Like total, on lui ajoute AddedLike(qui est variable)
-    let currentLike =
+    // -----------currentLike represente le nombre de Like total, on lui ajoute AddedLike(qui est variable)
+    let currentLike = (number) =>
       photographerMedia
         .map((obj) => {
           return obj.likes;
         })
         .reduce((sum, currentNote) => {
           return (sum += currentNote);
-        }) + 1;
-    console.log(currentLike);
+        }, 1) + number;
+    console.log(currentLike(0));
+
+    // ------- AddedLike est un tableau qui regroupera les ID des bouton cliqués. Avec length on a la longueur du tableau et donc le nombre de like à ajouter au total
+    let AddedLike = [];
+
+    // *----- à mettre en fonction injectLike() injection html de la LIKE CARD
+    const injectLike = () => {
+      likeCard.innerHTML = /*html*/ `<div class="like-card-number">${currentLike(
+        AddedLike.length
+      )} <i class="fa-solid fa-heart"></i></div>
+    <div class="like-card-price">${
+      responseJS.photographers[currentIdIndex].price
+    }€/ jour</div>`;
+    };
+
+    injectLike();
 
     //  For Each de gestion des boutons like "au clique" individiellement
     like.forEach((item) => {
       item.addEventListener("click", (e) => {
+        // console.log(item.parentElement.textContent);
+
         item.classList.toggle("fa-regular");
         item.classList.toggle("fa-solid");
 
         // CurrentLiekTab sert à décomposer les classes de l'icon I en tableau afin de le parcourir avec includes()
-        let currentLikeTab = item.classList.value.split(" ");
+        // TODO Si l'ID de la photo n'est pas ds le tableau je l'ajoute 1(push) et 2) je fais ++ au score de l'image et 3) => currentLike() pour update le score 4) mettre à jour l'affichage total de la card Like
+        let currentImgId = e.target.attributes[1].value;
 
-        console.log(currentLikeTab);
-        console.log(AddedLike);
-        if (currentLikeTab.includes("fa-regular")) {
-          AddedLike++;
-          return true;
+        if (!AddedLike.includes(currentImgId)) {
+          AddedLike.push(currentImgId);
+          //   TODO PB étap 2) pour changer la valeur du like sur l'image individuellement
         } else {
-          AddedLike--;
-          return false;
+          AddedLike = AddedLike.filter((obj) => obj != currentImgId);
         }
+        console.log(AddedLike.length);
+        currentLike(AddedLike.length);
+        injectLike();
       });
     });
 
-    // injection html de la LIKE CARD
-
-    likeCard.innerHTML = /*html*/ `<div class="like-card-number">${currentLike} <i class="fa-solid fa-heart"></i></div>
-    <div class="like-card-price">${responseJS.photographers[currentIdIndex].price}€/ jour</div>`;
-
     // ! 3) Tri activable
+
+    //TODO 1) d'abord interagir sur tableau d'objet , 2) mettre dans une fonction qui ressort le visuel
+    // ! 4) Light box, apparition photo
+    const photoContainerCard = document.querySelectorAll(
+      ".photo-container-card img"
+    );
+
+    // Fonction qui gère l'ouverture de la lightbox
+    const openLightBox = () => {
+      console.log("ca ouvre la modale photo");
+    };
+
+    // Je cible auc lique toutes les card photos/video
+    photoContainerCard.forEach((item) => {
+      item.addEventListener("click", () => openLightBox());
+    });
   } catch (error) {
     console.log(error, "erreur");
   }

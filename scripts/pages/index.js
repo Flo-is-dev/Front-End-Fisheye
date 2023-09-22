@@ -30,13 +30,13 @@ const displayPhotographer = (responseJS) => {
     // Fonction pour mettre le nom des photographes au bon format (txt collé) pour l'appel d'image
     const joinName = (str) => {
       let newName = str.replaceAll("-", "").split(" ");
-      console.log(newName);
+      //   console.log(newName);
       let [n, p] = newName;
       return [...n].join("") + [...p].join("");
     };
 
     let namePhotographe = joinName(name);
-    console.log(namePhotographe);
+    // console.log(namePhotographe);
 
     const photographerSection = document.querySelector(".photographer_section");
 
