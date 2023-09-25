@@ -122,7 +122,7 @@ async function getPhotographers() {
            responseJS.photographers[currentIdIndex].name.split(" ")[0]
          }/${photographerMedia[i].image}" alt="photo nommée ${
           photographerMedia[i].title
-        }" />
+        }" onclick="displayLightBox()" />
           <div class="photo-card-info">
           <p>${photographerMedia[i].title}</p>
           <span>${
