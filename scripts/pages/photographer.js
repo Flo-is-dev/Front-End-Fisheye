@@ -174,21 +174,28 @@ async function getPhotographers() {
     //  For Each de gestion des boutons like "au clique" individiellement
     like.forEach((item) => {
       item.addEventListener("click", (e) => {
-        // console.log(item.parentElement.textContent);
+        console.log(item.parentElement.innerHTML);
+        console.log(item.previousSibling.textContent);
 
         item.classList.toggle("fa-regular");
         item.classList.toggle("fa-solid");
 
         // CurrentLiekTab sert à décomposer les classes de l'icon I en tableau afin de le parcourir avec includes()
-        // TODO Si l'ID de la photo n'est pas ds le tableau je l'ajoute 1(push) et 2) je fais ++ au score de l'image et 3) => currentLike() pour update le score 4) mettre à jour l'affichage total de la card Like
         let currentImgId = e.target.attributes[1].value;
 
         // si l'ID de l'image n'est pas deja incluse dans le tableau, on l'ajoute, sinon on la retire
         if (!AddedLike.includes(currentImgId)) {
           AddedLike.push(currentImgId);
-          //   TODO PB étap 2) pour changer la valeur du like sur l'image individuellement, créer une fonction en amont utilisant nextsibling. je l'appel au IF (avec +1) et au ELSE (avec -1)
+          //    On ajoute +1 au previousSibling
+          item.previousSibling.textContent = `${
+            Number(item.previousSibling.textContent) + 1
+          }`;
         } else {
           AddedLike = AddedLike.filter((obj) => obj != currentImgId);
+          //    On retire -1 au previousSibling
+          item.previousSibling.textContent = `${
+            Number(item.previousSibling.textContent) - 1
+          }`;
         }
         console.log(AddedLike);
         console.log(AddedLike.length);
