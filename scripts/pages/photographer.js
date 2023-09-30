@@ -63,7 +63,7 @@ async function getPhotographers() {
     <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
     <img src="./assets/photographers/Photographers ID Photos/${namePhotographe}.jpg" alt="photo de ${responseJS.photographers[currentIdIndex].name}">`;
 
-    // ! 1) injection des photo de la page photographer
+    // ! OK------ 1) injection des photo de la page photographer
 
     // Tableau qui va contenir tous les index des photo d'un photographe
     const photographerMedia = [];
@@ -75,7 +75,6 @@ async function getPhotographers() {
         photographerMedia.push(responseJS.media[i]);
       }
     }
-    // TODO Essayer d'utiliser filter
 
     console.log(photographerMedia);
 
@@ -201,7 +200,7 @@ async function getPhotographers() {
     // ! 3) Tri activable
 
     //TODO 1) d'abord interagir sur tableau d'objet , 2) mettre dans une fonction qui ressort le visuel
-    // ! ----------  4) Light box
+    // ! OK ----------  4) Light box
     const photoContainerCard = document.querySelectorAll(
       ".photo-container-card img, .photo-container-card video"
     );
@@ -277,28 +276,47 @@ async function getPhotographers() {
       const btnRight = document.querySelector(".btn-right");
       const btnLeft = document.querySelector(".btn-left");
 
-      btnRight.addEventListener("click", () => {
-        console.log("je click droit");
+      //   On déclare les fonction qui seront joué aux evement click souris ou Keypress
+      const clickBtnRight = () => {
         lightboxIndexNew = lightboxIndexNew + 1;
         if (lightboxIndexNew > photographerMedia.length - 1) {
           lightboxIndexNew = 0;
         }
+        // on rejoue la fonction openLightBox pour mettre à jour le HTML
         openLightBox(e, lightboxIndexNew);
+      };
+
+      btnRight.addEventListener("click", () => {
+        clickBtnRight();
       });
 
-      btnLeft.addEventListener("click", () => {
-        console.log("je click gauche");
+      const clickBtnLeft = () => {
         lightboxIndexNew = lightboxIndexNew - 1;
         if (lightboxIndexNew < 0) {
           lightboxIndexNew = photographerMedia.length - 1;
         }
         openLightBox(e, lightboxIndexNew);
+      };
+      btnLeft.addEventListener("click", () => {
+        clickBtnLeft();
+      });
+
+      //   Gestion des boutons Gauche/droit au clavier
+      document.addEventListener("keydown", (e) => {
+        console.log("yes", e);
+        if (e.key === "ArrowRight") {
+          clickBtnRight();
+        } else if (e.key === "ArrowLeft") {
+          clickBtnLeft();
+        } else if (e.key === "Escape") {
+          closeLightBox();
+        }
       });
     };
 
     console.log(photographerMedia);
 
-    // Je cible auc lique toutes les card photos/video
+    // Je cible au clique toutes les card photos/video
     photoContainerCard.forEach((item, index) => {
       item.addEventListener("click", (e) => openLightBox(e, index));
     });
