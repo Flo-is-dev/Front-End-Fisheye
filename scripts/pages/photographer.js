@@ -79,25 +79,26 @@ async function getPhotographers() {
 
     console.log(photographerMedia);
 
-    // Parcour pour atteindre les fichier photographeq ue je vais injecter
+    // Parcour pour atteindre les fichier photographe que je vais injecter
     console.log(responseJS.photographers[currentIdIndex].name);
 
     const photoContainer = document.querySelector(".photo-container");
 
     // inject avec for photographerMedia[i]
-    for (let i = 0; i < photographerMedia.length; i++) {
-      // Pour gérer le cas de jpg ou video je passe par une variable intermédiaire et on vérifie si elle est undifined,
+    const injectHtmlPhotographer = () => {
+      for (let i = 0; i < photographerMedia.length; i++) {
+        // Pour gérer le cas de jpg ou video je passe par une variable intermédiaire et on vérifie si elle est undifined,
 
-      let mediaFormat = photographerMedia[i].image;
+        let mediaFormat = photographerMedia[i].image;
 
-      //   Si c'est une vidéo on inject le code IF sinon img on injecte le ELSE
-      if (!mediaFormat) {
-        let mediaFormat = photographerMedia[i].video;
-        console.log(mediaFormat, "c'est pas une photo");
+        //   Si c'est une vidéo on inject le code IF sinon img on injecte le ELSE
+        if (!mediaFormat) {
+          let mediaFormat = photographerMedia[i].video;
+          console.log(mediaFormat, "c'est pas une photo");
 
-        photoContainer.innerHTML += /*html*/ `
+          photoContainer.innerHTML += /*html*/ `
         <div class="photo-container-card">
-        <video controls width="100%">
+        <video width="100%"  onclick="displayLightBox()">
         <source src="../../assets/photographers/${
           responseJS.photographers[currentIdIndex].name.split(" ")[0]
         }/${mediaFormat}" type="video/webm" />
@@ -110,31 +111,34 @@ async function getPhotographers() {
           <span>${
             photographerMedia[i].likes
           }  <i class="fa-regular fa-heart like " media-id=${
-          photographerMedia[i].id
-        } ></i></span>
+            photographerMedia[i].id
+          } ></i></span>
          </div>
         </div>
       `;
-      } else {
-        photoContainer.innerHTML += /*html*/ `
+        } else {
+          photoContainer.innerHTML += /*html*/ `
         <div class="photo-container-card">
          <img src="../../assets/photographers/${
            responseJS.photographers[currentIdIndex].name.split(" ")[0]
          }/${photographerMedia[i].image}" alt="photo nommée ${
-          photographerMedia[i].title
-        }" onclick="displayLightBox()" />
+            photographerMedia[i].title
+          }" onclick="displayLightBox()" />
           <div class="photo-card-info">
           <p>${photographerMedia[i].title}</p>
           <span>${
             photographerMedia[i].likes
           }<i class="fa-regular fa-heart like" media-id=${
-          photographerMedia[i].id
-        }></i></span>
+            photographerMedia[i].id
+          }></i></span>
          </div>
         </div>
       `;
+        }
       }
-    }
+    };
+
+    injectHtmlPhotographer();
 
     // ! 2) injection des likes
 
@@ -142,7 +146,7 @@ async function getPhotographers() {
     const like = document.querySelectorAll(".like");
     const likeCard = document.querySelector(".like-card");
 
-    // -----------currentLike represente le nombre de Like total, on lui ajoute AddedLike(qui est variable)
+    // -----------currentLike represente le nombre de Like total, on lui ajoute AddedLike(qui est variable) "191"
     let currentLike = (number) =>
       photographerMedia
         .map((obj) => {
@@ -156,7 +160,7 @@ async function getPhotographers() {
     // ------- AddedLike est un tableau qui regroupera les ID des bouton cliqués. Avec length on a la longueur du tableau et donc le nombre de like à ajouter au total
     let AddedLike = [];
 
-    // *----- à mettre en fonction injectLike() injection html de la LIKE CARD
+    // ----- injectLike() injection html de la LIKE CARD
     const injectLike = () => {
       likeCard.innerHTML = /*html*/ `<div class="like-card-number">${currentLike(
         AddedLike.length
@@ -180,12 +184,14 @@ async function getPhotographers() {
         // TODO Si l'ID de la photo n'est pas ds le tableau je l'ajoute 1(push) et 2) je fais ++ au score de l'image et 3) => currentLike() pour update le score 4) mettre à jour l'affichage total de la card Like
         let currentImgId = e.target.attributes[1].value;
 
+        // si l'ID de l'image n'est pas deja incluse dans le tableau, on l'ajoute, sinon on la retire
         if (!AddedLike.includes(currentImgId)) {
           AddedLike.push(currentImgId);
-          //   TODO PB étap 2) pour changer la valeur du like sur l'image individuellement
+          //   TODO PB étap 2) pour changer la valeur du like sur l'image individuellement, créer une fonction en amont utilisant nextsibling. je l'appel au IF (avec +1) et au ELSE (avec -1)
         } else {
           AddedLike = AddedLike.filter((obj) => obj != currentImgId);
         }
+        console.log(AddedLike);
         console.log(AddedLike.length);
         currentLike(AddedLike.length);
         injectLike();
@@ -195,19 +201,75 @@ async function getPhotographers() {
     // ! 3) Tri activable
 
     //TODO 1) d'abord interagir sur tableau d'objet , 2) mettre dans une fonction qui ressort le visuel
-    // ! 4) Light box, apparition photo
+    // ! ----------  4) Light box
     const photoContainerCard = document.querySelectorAll(
-      ".photo-container-card img"
+      ".photo-container-card img, .photo-container-card video"
     );
 
-    // Fonction qui gère l'ouverture de la lightbox
-    const openLightBox = () => {
-      console.log("ca ouvre la modale photo");
+    console.log(photoContainerCard);
+
+    // Fonction qui gère l'ouverture de la lightbox et l'injection de l'image correspondante au clique
+    const lightBoxModal = document.querySelector(".lightbox-modal");
+
+    const openLightBox = (e, index) => {
+      console.log("ca ouvre la modale photo", index);
+      console.log(photographerMedia);
+      console.log(photographerMedia[index]);
+      console.log(responseJS.photographers[currentIdIndex].name.split(" ")[0]);
+
+      lightBoxModal.style.display = "flex";
+
+      if (!photographerMedia[index].image) {
+        lightBoxModal.innerHTML = /*html*/ ` 
+  
+            <i class="fa-solid fa-xmark" onclick="closeLightBox()"></i>
+            <div class="btn-left">
+            <i class="fa-solid fa-chevron-left"></i>
+                </div>
+                <div class="btn-right">
+            <i class="fa-solid fa-chevron-right"></i>
+            </div>
+                <div class="lightbox-photo">
+                    <video controls width="100%" >
+                    <source src="../../assets/photographers/${
+                      responseJS.photographers[currentIdIndex].name.split(
+                        " "
+                      )[0]
+                    }/${photographerMedia[index].video}" type="video/webm" />
+                    Download the
+                    <a href="/media/cc0-videos/flower.webm">WEBM</a>
+                    video.
+                    </video>
+                    <h3>${photographerMedia[index].title}</h3>
+                </div>`;
+      } else {
+        lightBoxModal.innerHTML = /*html*/ ` 
+  
+            <i class="fa-solid fa-xmark" onclick="closeLightBox()"></i>
+            <div class="btn-left">
+            <i class="fa-solid fa-chevron-left"></i>
+                </div>
+                <div class="btn-right">
+            <i class="fa-solid fa-chevron-right"></i>
+            </div>
+                <div class="lightbox-photo">
+                <img src="../../assets/photographers/${
+                  responseJS.photographers[currentIdIndex].name.split(" ")[0]
+                }/${photographerMedia[index].image}" alt="photo nommée ${
+          photographerMedia[index].title
+        }">
+                <h3>${photographerMedia[index].title}</h3>
+            </div>`;
+      }
     };
 
+    console.log(photographerMedia);
+
+    // TODO innerhtml
+
     // Je cible auc lique toutes les card photos/video
-    photoContainerCard.forEach((item) => {
-      item.addEventListener("click", () => openLightBox());
+    photoContainerCard.forEach((item, index) => {
+      item.addEventListener("click", (e) => openLightBox(e, index));
     });
   } catch (error) {
     console.log(error, "erreur");

@@ -1,15 +1,10 @@
-const overlayModal = document.querySelector(".overlay-modal");
-const lightBoxModal = document.querySelector(".mightbox-modal");
+const lightBoxModal = document.querySelector(".lightbox-modal");
 
 const displayLightBox = () => {
-  //   lightBoxModal.style.display = "block";
-  //   overlayModal.style.opacity = 1;
-  //   overlayModal.style.visibility = "visible";
-  console.log("Ca ouvre la lightbox");
+  console.log("fonction Lightbox que je peux enlevé du 1er inner  HTML");
 };
 
 const closeLightBox = () => {
+  console.log("ca close la lightbox");
   lightBoxModal.style.display = "none";
-  overlayModal.style.opacity = 0;
-  overlayModal.style.visibility = "hidden";
 };

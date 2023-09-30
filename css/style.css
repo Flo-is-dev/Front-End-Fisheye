@@ -190,3 +190,60 @@ a:visited {
   font-size: 24px;
   font-weight: 500;
 }
+
+/* ------------ */
+/* -----LIGHT BOX ----------------------- */
+/* ------------ */
+
+.lightbox-modal {
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgb(255, 255, 255);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.lightbox-modal > i {
+  color: #901c1c;
+  font-size: 62px;
+  position: absolute;
+  top: 10%;
+  right: 15%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.btn-left {
+  color: #901c1c;
+  font-size: 62px;
+  position: absolute;
+  top: 50%;
+  left: 15%;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+
+.btn-right {
+  color: #901c1c;
+  font-size: 62px;
+  position: absolute;
+  top: 50%;
+  right: 15%;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+
+.lightbox-photo img,
+.lightbox-photo video {
+  max-width: 80vw;
+  max-height: 80vh;
+}
+
+.lightbox-photo h3 {
+  font-size: 24px;
+  color: #901c1c;
+}
