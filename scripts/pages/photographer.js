@@ -206,7 +206,40 @@ async function getPhotographers() {
 
     // ! 3) Tri activable
 
+    const btnTri = document.getElementById("tri");
+
+    btnTri.addEventListener("change", (e) => {
+      if (e.target.value === "Date") {
+        console.log("on a date");
+        const sortDate = photographerMedia.sort((a, b) => {
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+
+          return dateB - dateA;
+        });
+        console.log("sortDate", sortDate);
+      } else if (e.target.value === "Titre") {
+        console.log("on a titre");
+        const sortTitle = photographerMedia.sort((a, b) => {
+          if (a.title < b.title) {
+            return -1;
+          }
+          if (a.title > b.title) {
+            return 1;
+          }
+          return 0;
+        });
+        console.log("sortTitle", sortTitle);
+      } else if (e.target.value === "Popularité") {
+        console.log("on a popularité");
+        const sortLike = photographerMedia.sort((a, b) => b.likes - a.likes);
+        console.log("sortLike", sortLike);
+      }
+    });
+
     //TODO 1) d'abord interagir sur tableau d'objet , 2) mettre dans une fonction qui ressort le visuel
+    console.log(photographerMedia);
+
     // ! OK ----------  4) Light box
     const photoContainerCard = document.querySelectorAll(
       ".photo-container-card img, .photo-container-card video"
@@ -320,8 +353,6 @@ async function getPhotographers() {
         }
       });
     };
-
-    console.log(photographerMedia);
 
     // Je cible au clique toutes les card photos/video
     photoContainerCard.forEach((item, index) => {
