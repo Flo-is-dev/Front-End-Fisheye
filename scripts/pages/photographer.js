@@ -98,7 +98,7 @@ async function getPhotographers() {
 
           photoContainer.innerHTML += /*html*/ `
         <div class="photo-container-card">
-        <video width="100%"  onclick="displayLightBox()">
+        <video width="100%" >
         <source src="../../assets/photographers/${
           responseJS.photographers[currentIdIndex].name.split(" ")[0]
         }/${mediaFormat}" type="video/webm" />
@@ -115,7 +115,7 @@ async function getPhotographers() {
           } ></i></span>
          </div>
         </div>
-      `;
+        `;
         } else {
           photoContainer.innerHTML += /*html*/ `
         <div class="photo-container-card">
@@ -123,7 +123,7 @@ async function getPhotographers() {
            responseJS.photographers[currentIdIndex].name.split(" ")[0]
          }/${photographerMedia[i].image}" alt="photo nommée ${
             photographerMedia[i].title
-          }" onclick="displayLightBox()" />
+          }"  />
           <div class="photo-card-info">
           <p>${photographerMedia[i].title}</p>
           <span>${
@@ -212,15 +212,20 @@ async function getPhotographers() {
     const lightBoxModal = document.querySelector(".lightbox-modal");
 
     const openLightBox = (e, index) => {
+      // Je déclare une variable initialement égale à "index" qui sera incrémenté ou décrémenté aux cliques flèche droit ou gauche
+      let lightboxIndexNew = index;
+
       console.log("ca ouvre la modale photo", index);
       console.log(photographerMedia);
-      console.log(photographerMedia[index]);
-      console.log(responseJS.photographers[currentIdIndex].name.split(" ")[0]);
+      //   console.log(photographerMedia[index]);
+      //   console.log(responseJS.photographers[currentIdIndex].name.split(" ")[0]);
 
       lightBoxModal.style.display = "flex";
 
-      if (!photographerMedia[index].image) {
-        lightBoxModal.innerHTML = /*html*/ ` 
+      //   Si ce n'est pas une img j'injecte video, sinon j'injecte img en innerHTML
+      const injectHtmlLightbox = () => {
+        if (!photographerMedia[lightboxIndexNew].image) {
+          lightBoxModal.innerHTML = /*html*/ ` 
   
             <i class="fa-solid fa-xmark" onclick="closeLightBox()"></i>
             <div class="btn-left">
@@ -235,15 +240,17 @@ async function getPhotographers() {
                       responseJS.photographers[currentIdIndex].name.split(
                         " "
                       )[0]
-                    }/${photographerMedia[index].video}" type="video/webm" />
+                    }/${
+            photographerMedia[lightboxIndexNew].video
+          }" type="video/webm" />
                     Download the
                     <a href="/media/cc0-videos/flower.webm">WEBM</a>
                     video.
                     </video>
                     <h3>${photographerMedia[index].title}</h3>
                 </div>`;
-      } else {
-        lightBoxModal.innerHTML = /*html*/ ` 
+        } else {
+          lightBoxModal.innerHTML = /*html*/ ` 
   
             <i class="fa-solid fa-xmark" onclick="closeLightBox()"></i>
             <div class="btn-left">
@@ -255,17 +262,41 @@ async function getPhotographers() {
                 <div class="lightbox-photo">
                 <img src="../../assets/photographers/${
                   responseJS.photographers[currentIdIndex].name.split(" ")[0]
-                }/${photographerMedia[index].image}" alt="photo nommée ${
-          photographerMedia[index].title
-        }">
-                <h3>${photographerMedia[index].title}</h3>
+                }/${
+            photographerMedia[lightboxIndexNew].image
+          }" alt="photo nommée ${photographerMedia[lightboxIndexNew].title}">
+                <h3>${photographerMedia[lightboxIndexNew].title}</h3>
             </div>`;
-      }
+        }
+      };
+
+      injectHtmlLightbox();
+
+      //   Après l'injection HTML je gère les flèches G/D
+
+      const btnRight = document.querySelector(".btn-right");
+      const btnLeft = document.querySelector(".btn-left");
+
+      btnRight.addEventListener("click", () => {
+        console.log("je click droit");
+        lightboxIndexNew = lightboxIndexNew + 1;
+        if (lightboxIndexNew > photographerMedia.length - 1) {
+          lightboxIndexNew = 0;
+        }
+        openLightBox(e, lightboxIndexNew);
+      });
+
+      btnLeft.addEventListener("click", () => {
+        console.log("je click gauche");
+        lightboxIndexNew = lightboxIndexNew - 1;
+        if (lightboxIndexNew < 0) {
+          lightboxIndexNew = photographerMedia.length - 1;
+        }
+        openLightBox(e, lightboxIndexNew);
+      });
     };
 
     console.log(photographerMedia);
-
-    // TODO innerhtml
 
     // Je cible auc lique toutes les card photos/video
     photoContainerCard.forEach((item, index) => {
