@@ -42,7 +42,7 @@ const displayPhotographer = (responseJS) => {
 
     photographerSection.innerHTML += /*html*/ `
           <article aria-describedby="carte du photographe ${responseJS.photographers[i].name}">
-              <a href="/photographer.html?id=${responseJS.photographers[i].id}">
+              <a href="/photographer.html?id=${responseJS.photographers[i].id}" role="link" aria-label="Voir le profil de ${responseJS.photographers[i].name}">
                   <img src="../../assets/photographers/Photographers ID Photos/${namePhotographe}.jpg"  alt="photo de ${responseJS.photographers[i].name}">
                   <h2>${responseJS.photographers[i].name}</h2>
               </a>

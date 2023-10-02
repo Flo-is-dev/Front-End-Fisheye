@@ -60,13 +60,13 @@ async function getPhotographers() {
     <h3>${responseJS.photographers[currentIdIndex].city},${responseJS.photographers[currentIdIndex].country}</h3>
     <p>${responseJS.photographers[currentIdIndex].tagline}</p>
     </div>
-    <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+    <button class="contact_button" type="button" aria-label="open contact form" onclick="displayModal()">Contactez-moi</button>
     <img src="./assets/photographers/Photographers ID Photos/${namePhotographe}.jpg" alt="photo de ${responseJS.photographers[currentIdIndex].name}">`;
 
     // ! OK------ 1) injection des photo de la page photographer
 
     // Tableau qui va contenir tous les index des photo d'un photographe
-    const photographerMedia = [];
+    let photographerMedia = [];
 
     // console.log(responseJS.media[0].photographerId);
 
@@ -84,20 +84,20 @@ async function getPhotographers() {
     const photoContainer = document.querySelector(".photo-container");
 
     // inject avec for photographerMedia[i]
-    const injectHtmlPhotographer = () => {
-      for (let i = 0; i < photographerMedia.length; i++) {
+    const injectHtmlPhotographer = (newMedia) => {
+      for (let i = 0; i < newMedia.length; i++) {
         // Pour gérer le cas de jpg ou video je passe par une variable intermédiaire et on vérifie si elle est undifined,
 
-        let mediaFormat = photographerMedia[i].image;
+        let mediaFormat = newMedia[i].image;
 
         //   Si c'est une vidéo on inject le code IF sinon img on injecte le ELSE
         if (!mediaFormat) {
-          let mediaFormat = photographerMedia[i].video;
+          let mediaFormat = newMedia[i].video;
           console.log(mediaFormat, "c'est pas une photo");
 
           photoContainer.innerHTML += /*html*/ `
         <div class="photo-container-card">
-        <video width="100%" >
+        <video width="100%" role="link" aria-label="full screen view" >
         <source src="../../assets/photographers/${
           responseJS.photographers[currentIdIndex].name.split(" ")[0]
         }/${mediaFormat}" type="video/webm" />
@@ -105,30 +105,31 @@ async function getPhotographers() {
          <a href="/media/cc0-videos/flower.webm">WEBM</a>
          video.
         </video>
-          <div class="photo-card-info">
-          <p>${photographerMedia[i].title}</p> 
+          <div class="photo-card-info" aria-label="Title like button and number of likes">
+          <p>${newMedia[i].title}</p> 
           <span>${
-            photographerMedia[i].likes
-          }  <i class="fa-regular fa-heart like " media-id=${
-            photographerMedia[i].id
+            newMedia[i].likes
+          }  <i class="fa-regular fa-heart like " type="button" aria-label="like" media-id=${
+            newMedia[i].id
           } ></i></span>
          </div>
         </div>
         `;
         } else {
           photoContainer.innerHTML += /*html*/ `
-        <div class="photo-container-card">
+        <div class="photo-container-card"> <figure>
          <img src="../../assets/photographers/${
            responseJS.photographers[currentIdIndex].name.split(" ")[0]
-         }/${photographerMedia[i].image}" alt="photo nommée ${
-            photographerMedia[i].title
-          }"  />
-          <div class="photo-card-info">
-          <p>${photographerMedia[i].title}</p>
+         }/${newMedia[i].image}" alt="photo nommée ${
+            newMedia[i].title
+          }" role="link" aria-label="full screen view"  />
+          </figure>
+          <div class="photo-card-info" aria-label="Title like button and number of likes">
+          <p>${newMedia[i].title}</p>
           <span>${
-            photographerMedia[i].likes
-          }<i class="fa-regular fa-heart like" media-id=${
-            photographerMedia[i].id
+            newMedia[i].likes
+          }<i class="fa-regular fa-heart like" type="button" aria-label="like"  media-id=${
+            newMedia[i].id
           }></i></span>
          </div>
         </div>
@@ -137,7 +138,7 @@ async function getPhotographers() {
       }
     };
 
-    injectHtmlPhotographer();
+    injectHtmlPhotographer(photographerMedia);
 
     // ! 2) injection des likes
 
@@ -205,6 +206,8 @@ async function getPhotographers() {
     });
 
     // ! 3) Tri activable
+    // TODO QUESTION? Dois-je rejouer toutes les fonctions liées à lightbox et aux likes?*
+    // TODO - Si oui, replacer tous les "photographerMedia" par "newMedia" et appelé dans chaque situation de tri les fonction liées à lightbox et aux likes?
 
     const btnTri = document.getElementById("tri");
 
@@ -218,6 +221,8 @@ async function getPhotographers() {
           return dateB - dateA;
         });
         console.log("sortDate", sortDate);
+        photoContainer.innerHTML = null;
+        injectHtmlPhotographer(sortDate);
       } else if (e.target.value === "Titre") {
         console.log("on a titre");
         const sortTitle = photographerMedia.sort((a, b) => {
@@ -230,10 +235,14 @@ async function getPhotographers() {
           return 0;
         });
         console.log("sortTitle", sortTitle);
+        photoContainer.innerHTML = null;
+        injectHtmlPhotographer(sortTitle);
       } else if (e.target.value === "Popularité") {
         console.log("on a popularité");
         const sortLike = photographerMedia.sort((a, b) => b.likes - a.likes);
         console.log("sortLike", sortLike);
+        photoContainer.innerHTML = null;
+        injectHtmlPhotographer(sortLike);
       }
     });
 
@@ -266,15 +275,15 @@ async function getPhotographers() {
         if (!photographerMedia[lightboxIndexNew].image) {
           lightBoxModal.innerHTML = /*html*/ ` 
   
-            <i class="fa-solid fa-xmark" onclick="closeLightBox()"></i>
-            <div class="btn-left">
-            <i class="fa-solid fa-chevron-left"></i>
-                </div>
-                <div class="btn-right">
-            <i class="fa-solid fa-chevron-right"></i>
+            <i class="fa-solid fa-xmark" aria-label="close lightbox" onclick="closeLightBox()"></i>
+            <div class="btn-left" aria-label="previous media">
+                <i class="fa-solid fa-chevron-left"></i>
+            </div>
+            <div class="btn-right" aria-label="next media">
+                <i class="fa-solid fa-chevron-right"></i>
             </div>
                 <div class="lightbox-photo">
-                    <video controls width="100%" >
+                    <video controls width="100%" role="media" aria-label="current video" >
                     <source src="../../assets/photographers/${
                       responseJS.photographers[currentIdIndex].name.split(
                         " "
@@ -291,11 +300,11 @@ async function getPhotographers() {
         } else {
           lightBoxModal.innerHTML = /*html*/ ` 
   
-            <i class="fa-solid fa-xmark" onclick="closeLightBox()"></i>
-            <div class="btn-left">
+            <i class="fa-solid fa-xmark" aria-label="close lightbox" onclick="closeLightBox()"></i>
+            <div class="btn-left" aria-label="previous media">
             <i class="fa-solid fa-chevron-left"></i>
                 </div>
-                <div class="btn-right">
+                <div class="btn-right" aria-label="next media">
             <i class="fa-solid fa-chevron-right"></i>
             </div>
                 <div class="lightbox-photo">
@@ -303,7 +312,9 @@ async function getPhotographers() {
                   responseJS.photographers[currentIdIndex].name.split(" ")[0]
                 }/${
             photographerMedia[lightboxIndexNew].image
-          }" alt="photo nommée ${photographerMedia[lightboxIndexNew].title}">
+          }" alt="photo nommée ${
+            photographerMedia[lightboxIndexNew].title
+          }" role="media" aria-label="current image" >
                 <h3>${photographerMedia[lightboxIndexNew].title}</h3>
             </div>`;
         }

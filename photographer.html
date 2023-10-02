@@ -15,7 +15,8 @@
 <body>
 
     <header>
-        <a href="./index.html"><img src="assets/images/logo.png" class="logo" /></a>
+        <a href="./index.html">
+            <img src="assets/images/logo.png" class="logo" alt="fisheye logo" aria-label="return to home page" /></a>
     </header>
 
     <main id="main">
@@ -65,25 +66,26 @@
     <aside>
         <div class="overlay-modal"></div>
         <div id="contact_modal">
-            <div class="modal">
+            <div class="modal" aria-describedby="formTitle">
                 <header>
                     <h2>Contactez-moi <br> Mimi Keel</h2>
-                    <img src="assets/icons/close.svg" onclick="closeModal()" />
+                    <img src="assets/icons/close.svg" type="button" aria-label="close contact form"
+                        onclick="closeModal()" />
 
                 </header>
                 <form id="contactForm">
 
                     <div>
-                        <label>Prénom</label>
+                        <label id="firstname">Prénom</label>
                         <input type="text" id="firstname" autocomplete="none">
-                        <label>Nom</label>
+                        <label id="lastname">Nom</label>
                         <input type="text" id="lastname" autocomplete="none">
-                        <label>Email</label>
+                        <label id="email">Email</label>
                         <input type="email" name="" id="email" autocomplete="none">
-                        <label>Votre message</label>
+                        <label id="message">Votre message</label>
                         <textarea name="" id="message" cols="" rows="4"></textarea>
                     </div>
-                    <input class="contact_button" type="submit" value="Envoyer">
+                    <input class="contact_button" type="submit" value="Envoyer" aria-label="Send message">
                 </form>
             </div>
         </div>
@@ -92,7 +94,7 @@
 
     <!-- Modal lightBox -->
     <aside>
-        <div class="lightbox-modal">
+        <div class="lightbox-modal" aria-label="Media fullscreen view">
 
             <!-- <i class="fa-solid fa-xmark" onclick="closeLightBox()"></i>
             <div class="btn-left">
