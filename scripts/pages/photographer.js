@@ -117,20 +117,21 @@ async function getPhotographers() {
         `;
         } else {
           photoContainer.innerHTML += /*html*/ `
-        <div class="photo-container-card"> <figure>
+        <div class="photo-container-card">
+        
          <img src="../../assets/photographers/${
            responseJS.photographers[currentIdIndex].name.split(" ")[0]
          }/${newMedia[i].image}" alt="photo nommée ${
             newMedia[i].title
           }" role="link" aria-label="full screen view"  />
-          </figure>
+          
           <div class="photo-card-info" aria-label="Title like button and number of likes">
           <p>${newMedia[i].title}</p>
           <span>${
             newMedia[i].likes
-          }<i class="fa-regular fa-heart like" type="button" aria-label="like"  media-id=${
+          }<i class="fa-regular fa-heart like" media-id=${
             newMedia[i].id
-          }></i></span>
+          } type="button" aria-label="like" ></i></span>
          </div>
         </div>
       `;
@@ -175,8 +176,7 @@ async function getPhotographers() {
     //  For Each de gestion des boutons like "au clique" individiellement
     like.forEach((item) => {
       item.addEventListener("click", (e) => {
-        console.log(item.parentElement.innerHTML);
-        console.log(item.previousSibling.textContent);
+        // console.log(item.previousSibling.textContent);
 
         item.classList.toggle("fa-regular");
         item.classList.toggle("fa-solid");
@@ -221,6 +221,7 @@ async function getPhotographers() {
           return dateB - dateA;
         });
         console.log("sortDate", sortDate);
+
         photoContainer.innerHTML = null;
         injectHtmlPhotographer(sortDate);
       } else if (e.target.value === "Titre") {
@@ -235,6 +236,7 @@ async function getPhotographers() {
           return 0;
         });
         console.log("sortTitle", sortTitle);
+
         photoContainer.innerHTML = null;
         injectHtmlPhotographer(sortTitle);
       } else if (e.target.value === "Popularité") {
@@ -258,6 +260,11 @@ async function getPhotographers() {
 
     // Fonction qui gère l'ouverture de la lightbox et l'injection de l'image correspondante au clique
     const lightBoxModal = document.querySelector(".lightbox-modal");
+
+    // Je cible au clique toutes les card photos/video
+    photoContainerCard.forEach((item, index) => {
+      item.addEventListener("click", (e) => openLightBox(e, index));
+    });
 
     const openLightBox = (e, index) => {
       // Je déclare une variable initialement égale à "index" qui sera incrémenté ou décrémenté aux cliques flèche droit ou gauche
@@ -365,10 +372,16 @@ async function getPhotographers() {
       });
     };
 
-    // Je cible au clique toutes les card photos/video
-    photoContainerCard.forEach((item, index) => {
-      item.addEventListener("click", (e) => openLightBox(e, index));
-    });
+    // ! ---- injection HTML page contact
+
+    const headerContact = document.getElementById("contact-header");
+
+    headerContact.innerHTML = /*html*/ `
+    <h2>Contactez-moi <br> ${responseJS.photographers[currentIdIndex].name}</h2>
+                    <img src="assets/icons/close.svg" type="button" aria-label="close contact form"
+                        onclick="closeModal()" />`;
+
+    // END
   } catch (error) {
     console.log(error, "erreur");
   }

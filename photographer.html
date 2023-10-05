@@ -16,7 +16,8 @@
 
     <header>
         <a href="./index.html">
-            <img src="assets/images/logo.png" class="logo" alt="fisheye logo" aria-label="return to home page" /></a>
+            <img src="assets/images/logo.png" class="logo" alt="fisheye logo" aria-label="return to home page" />
+        </a>
     </header>
 
     <main id="main">
@@ -67,22 +68,21 @@
         <div class="overlay-modal"></div>
         <div id="contact_modal">
             <div class="modal" aria-describedby="formTitle">
-                <header>
+                <header id="contact-header">
                     <h2>Contactez-moi <br> Mimi Keel</h2>
                     <img src="assets/icons/close.svg" type="button" aria-label="close contact form"
                         onclick="closeModal()" />
-
                 </header>
                 <form id="contactForm">
 
                     <div>
-                        <label id="firstname">Prénom</label>
+                        <label id="firstname" for="firstname">Prénom</label>
                         <input type="text" id="firstname" autocomplete="none">
-                        <label id="lastname">Nom</label>
+                        <label id="lastname" for="lastname">Nom</label>
                         <input type="text" id="lastname" autocomplete="none">
-                        <label id="email">Email</label>
+                        <label id="email" for="email">Email</label>
                         <input type="email" name="" id="email" autocomplete="none">
-                        <label id="message">Votre message</label>
+                        <label id="message" for="message">Votre message</label>
                         <textarea name="" id="message" cols="" rows="4"></textarea>
                     </div>
                     <input class="contact_button" type="submit" value="Envoyer" aria-label="Send message">
