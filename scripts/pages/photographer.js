@@ -93,11 +93,10 @@ async function getPhotographers() {
         //   Si c'est une vidéo on inject le code IF sinon img on injecte le ELSE
         if (!mediaFormat) {
           let mediaFormat = newMedia[i].video;
-          console.log(mediaFormat, "c'est pas une photo");
 
           photoContainer.innerHTML += /*html*/ `
         <div class="photo-container-card">
-        <video width="100%" role="link" aria-label="full screen view" >
+        <video width="100%" tabindex="0" role="link" aria-label="full screen view" >
         <source src="../../assets/photographers/${
           responseJS.photographers[currentIdIndex].name.split(" ")[0]
         }/${mediaFormat}" type="video/webm" />
@@ -109,9 +108,9 @@ async function getPhotographers() {
           <p>${newMedia[i].title}</p> 
           <span>${
             newMedia[i].likes
-          }  <i class="fa-regular fa-heart like " type="button" aria-label="like" media-id=${
+          }  <i class="fa-regular fa-heart like "  media-id=${
             newMedia[i].id
-          } ></i></span>
+          } type="button" aria-label="like" tabindex="0" ></i></span>
          </div>
         </div>
         `;
@@ -123,7 +122,7 @@ async function getPhotographers() {
            responseJS.photographers[currentIdIndex].name.split(" ")[0]
          }/${newMedia[i].image}" alt="photo nommée ${
             newMedia[i].title
-          }" role="link" aria-label="full screen view"  />
+          }" role="link" aria-label="full screen view" tabindex="0"  />
           
           <div class="photo-card-info" aria-label="Title like button and number of likes">
           <p>${newMedia[i].title}</p>
@@ -131,7 +130,7 @@ async function getPhotographers() {
             newMedia[i].likes
           }<i class="fa-regular fa-heart like" media-id=${
             newMedia[i].id
-          } type="button" aria-label="like" ></i></span>
+          } type="button" aria-label="like" tabindex="0" ></i></span>
          </div>
         </div>
       `;
@@ -147,7 +146,7 @@ async function getPhotographers() {
     const like = document.querySelectorAll(".like");
     const likeCard = document.querySelector(".like-card");
 
-    // -----------currentLike represente le nombre de Like total, on lui ajoute AddedLike(qui est variable) "191"
+    // -----------currentLike represente le nombre de Like total, on lui ajoute AddedLike(qui est variable)
     let currentLike = (number) =>
       photographerMedia
         .map((obj) => {
@@ -161,17 +160,17 @@ async function getPhotographers() {
     // ------- AddedLike est un tableau qui regroupera les ID des bouton cliqués. Avec length on a la longueur du tableau et donc le nombre de like à ajouter au total
     let AddedLike = [];
 
-    // ----- injectLike() injection html de la LIKE CARD
-    const injectLike = () => {
+    // ----- injectLike() sert à l'injection html de la "LIKE CARD"
+    const injectLike = (value) => {
       likeCard.innerHTML = /*html*/ `<div class="like-card-number">${currentLike(
-        AddedLike.length
+        value
       )} <i class="fa-solid fa-heart"></i></div>
     <div class="like-card-price">${
       responseJS.photographers[currentIdIndex].price
     }€/ jour</div>`;
     };
 
-    injectLike();
+    injectLike(AddedLike.length);
 
     //  For Each de gestion des boutons like "au clique" individiellement
     like.forEach((item) => {
@@ -201,15 +200,18 @@ async function getPhotographers() {
         console.log(AddedLike);
         console.log(AddedLike.length);
         currentLike(AddedLike.length);
-        injectLike();
+        injectLike(AddedLike.length);
       });
     });
 
     // ! 3) Tri activable
-    // TODO QUESTION? Dois-je rejouer toutes les fonctions liées à lightbox et aux likes?*
-    // TODO - Si oui, replacer tous les "photographerMedia" par "newMedia" et appelé dans chaque situation de tri les fonction liées à lightbox et aux likes?
+    // TODO QUESTION? ma constante photoContainerCard est définie en dehors de l'évèneent tri ci -dessous mais si je ne l'a redéfinie pas dedans ensuite, c'esst comme si elle était effacé, je dois donc la redéfinir... PK??
 
     const btnTri = document.getElementById("tri");
+    // Constante lié à la partie lightBox
+    const photoContainerCard = document.querySelectorAll(
+      ".photo-container-card img, .photo-container-card video"
+    );
 
     btnTri.addEventListener("change", (e) => {
       if (e.target.value === "Date") {
@@ -246,15 +248,60 @@ async function getPhotographers() {
         photoContainer.innerHTML = null;
         injectHtmlPhotographer(sortLike);
       }
+
+      // --LIGHTBOX-RAPPEL-- on rappel la fonction liée à la lightbox une fois le tri effectué
+      const photoContainerCard = document.querySelectorAll(
+        ".photo-container-card img, .photo-container-card video"
+      );
+      photoContainerCard.forEach((item, index) => {
+        item.addEventListener("click", (e) => openLightBox(e, index));
+      });
+
+      //   --LIKE-RAPPEL-- on rappel la fonction liée aux LIKES une fois le tri effectué
+
+      const like = document.querySelectorAll(".like");
+      const likeCard = document.querySelector(".like-card");
+
+      //   Permet de remttre la LikeCard à son score initial sans les likes
+      let AddedLike = [];
+
+      like.forEach((item) => {
+        item.addEventListener("click", (e) => {
+          // console.log(item.previousSibling.textContent);
+
+          item.classList.toggle("fa-regular");
+          item.classList.toggle("fa-solid");
+
+          // CurrentLiekTab sert à décomposer les classes de l'icon I en tableau afin de le parcourir avec includes()
+          let currentImgId = e.target.attributes[1].value;
+
+          // si l'ID de l'image n'est pas deja incluse dans le tableau, on l'ajoute, sinon on la retire
+          if (!AddedLike.includes(currentImgId)) {
+            AddedLike.push(currentImgId);
+            //    On ajoute +1 au previousSibling
+            item.previousSibling.textContent = `${
+              Number(item.previousSibling.textContent) + 1
+            }`;
+          } else {
+            AddedLike = AddedLike.filter((obj) => obj != currentImgId);
+            //    On retire -1 au previousSibling
+            item.previousSibling.textContent = `${
+              Number(item.previousSibling.textContent) - 1
+            }`;
+          }
+          console.log(AddedLike);
+          console.log(AddedLike.length);
+          currentLike(AddedLike.length);
+          injectLike(AddedLike.length);
+        });
+      });
+      injectLike(AddedLike.length);
     });
 
     //TODO 1) d'abord interagir sur tableau d'objet , 2) mettre dans une fonction qui ressort le visuel
     console.log(photographerMedia);
 
     // ! OK ----------  4) Light box
-    const photoContainerCard = document.querySelectorAll(
-      ".photo-container-card img, .photo-container-card video"
-    );
 
     console.log(photoContainerCard);
 
@@ -361,7 +408,7 @@ async function getPhotographers() {
 
       //   Gestion des boutons Gauche/droit au clavier
       document.addEventListener("keydown", (e) => {
-        console.log("yes", e);
+        console.log(e.key);
         if (e.key === "ArrowRight") {
           clickBtnRight();
         } else if (e.key === "ArrowLeft") {
@@ -378,7 +425,7 @@ async function getPhotographers() {
 
     headerContact.innerHTML = /*html*/ `
     <h2>Contactez-moi <br> ${responseJS.photographers[currentIdIndex].name}</h2>
-                    <img src="assets/icons/close.svg" type="button" aria-label="close contact form"
+                    <img src="assets/icons/close.svg" tabindex="1" type="button" aria-label="close contact form"
                         onclick="closeModal()" />`;
 
     // END

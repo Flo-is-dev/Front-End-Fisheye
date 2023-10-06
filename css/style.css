@@ -34,9 +34,13 @@ a:visited {
 
 /* ------main ------------------------------------------ */
 
+header a {
+  margin-left: 100px;
+}
+
 .logo {
   height: 50px;
-  margin-left: 100px;
+  /* margin-left: 100px; */
 }
 
 .photographer_section {
@@ -254,4 +258,19 @@ a:visited {
 .lightbox-photo h3 {
   font-size: 24px;
   color: #901c1c;
+}
+
+img:focus,
+video:focus,
+button:focus,
+select:focus,
+i:focus,
+a:focus,
+input:focus,
+textarea:focus {
+  outline: #d3573c solid 4px;
+}
+
+input[type="submit"]:focus {
+  outline: #ffffff solid 4px;
 }

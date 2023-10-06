@@ -59,8 +59,8 @@
 
     <!-- Card des likes  -->
     <div class="like-card">
-        <div class="like-card-number">297 081 <i class="fa-solid fa-heart"></i></div>
-        <div class="like-card-price">300€/ jour</div>
+        <!-- <div class="like-card-number">297 081 <i class="fa-solid fa-heart"></i></div>
+        <div class="like-card-price">300€/ jour</div> -->
     </div>
 
     <!-- modal de formulaire ouverte quand on clique sur contactez-moi button -->*
@@ -70,7 +70,7 @@
             <div class="modal" aria-describedby="formTitle">
                 <header id="contact-header">
                     <h2>Contactez-moi <br> Mimi Keel</h2>
-                    <img src="assets/icons/close.svg" type="button" aria-label="close contact form"
+                    <img src="assets/icons/close.svg" tabindex="1" type="button" aria-label="close contact form"
                         onclick="closeModal()" />
                 </header>
                 <form id="contactForm">
@@ -85,7 +85,7 @@
                         <label id="message" for="message">Votre message</label>
                         <textarea name="" id="message" cols="" rows="4"></textarea>
                     </div>
-                    <input class="contact_button" type="submit" value="Envoyer" aria-label="Send message">
+                    <input class="contact_button" type="submit" value="Envoyer" aria-label="Send message" tabindex="0">
                 </form>
             </div>
         </div>
