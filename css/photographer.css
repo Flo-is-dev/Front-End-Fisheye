@@ -126,3 +126,14 @@ textarea {
   resize: none;
   width: 100%;
 }
+
+input.error-input {
+  background-color: #ffd6da;
+  border: 2px solid #ff4e60;
+}
+
+::placeholder {
+  color: rgb(187, 187, 187);
+  font-size: 14px;
+  letter-spacing: 1px;
+}

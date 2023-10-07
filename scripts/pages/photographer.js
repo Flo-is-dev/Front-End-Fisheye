@@ -31,13 +31,10 @@ async function getPhotographers() {
       return element === Number(param);
     };
 
-    console.log(isCurrentID());
-
     // FindIndex nous donnera l'index de l'élément correspondant dans le tableau IdPhotoTab, il vérifie pour chaque i si c'est false ou true grace à la fonction isCurrentId
     let currentIdIndex = IdPhotoTab.findIndex(isCurrentID);
 
     console.log(IdPhotoTab);
-    console.log(currentIdIndex);
 
     // Fonction de nom
     let name = responseJS.photographers[currentIdIndex].name;
@@ -79,7 +76,7 @@ async function getPhotographers() {
     console.log(photographerMedia);
 
     // Parcour pour atteindre les fichier photographe que je vais injecter
-    console.log(responseJS.photographers[currentIdIndex].name);
+    // console.log(responseJS.photographers[currentIdIndex].name);
 
     const photoContainer = document.querySelector(".photo-container");
 
@@ -155,7 +152,7 @@ async function getPhotographers() {
         .reduce((sum, currentNote) => {
           return (sum += currentNote);
         }, 1) + number;
-    console.log(currentLike(0));
+    // console.log(currentLike(0));
 
     // ------- AddedLike est un tableau qui regroupera les ID des bouton cliqués. Avec length on a la longueur du tableau et donc le nombre de like à ajouter au total
     let AddedLike = [];
@@ -298,12 +295,7 @@ async function getPhotographers() {
       injectLike(AddedLike.length);
     });
 
-    //TODO 1) d'abord interagir sur tableau d'objet , 2) mettre dans une fonction qui ressort le visuel
-    console.log(photographerMedia);
-
     // ! OK ----------  4) Light box
-
-    console.log(photoContainerCard);
 
     // Fonction qui gère l'ouverture de la lightbox et l'injection de l'image correspondante au clique
     const lightBoxModal = document.querySelector(".lightbox-modal");
@@ -408,7 +400,7 @@ async function getPhotographers() {
 
       //   Gestion des boutons Gauche/droit au clavier
       document.addEventListener("keydown", (e) => {
-        console.log(e.key);
+        // console.log(e.key);
         if (e.key === "ArrowRight") {
           clickBtnRight();
         } else if (e.key === "ArrowLeft") {

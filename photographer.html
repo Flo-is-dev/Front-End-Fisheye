@@ -76,13 +76,16 @@
                 <form id="contactForm">
 
                     <div>
-                        <label id="firstname" for="firstname">Prénom</label>
-                        <input type="text" id="firstname" autocomplete="none">
-                        <label id="lastname" for="lastname">Nom</label>
-                        <input type="text" id="lastname" autocomplete="none">
-                        <label id="email" for="email">Email</label>
-                        <input type="email" name="" id="email" autocomplete="none">
-                        <label id="message" for="message">Votre message</label>
+                        <label for="firstname">Prénom</label>
+                        <input type="text" id="firstname" autocomplete="none"
+                            placeholder="Veuillez entrer 2 caractères ou plus.">
+                        <label for="lastname">Nom</label>
+                        <input type="text" id="lastname" autocomplete="none"
+                            placeholder="Veuillez entrer 2 caractères ou plus.">
+                        <label for="email">Email</label>
+                        <input type="email" name="" id="email" autocomplete="none"
+                            placeholder="Veuillez entrer une adresse mail valide.">
+                        <label for="message">Votre message</label>
                         <textarea name="" id="message" cols="" rows="4"></textarea>
                     </div>
                     <input class="contact_button" type="submit" value="Envoyer" aria-label="Send message" tabindex="0">
