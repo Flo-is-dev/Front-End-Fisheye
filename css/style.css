@@ -183,7 +183,16 @@ header a {
 .photo-card-info i {
   cursor: pointer;
   font-size: 21px;
-  margin-left: 10px;
+  /* margin-left: 10px; */
+}
+
+.photo-card-info button {
+  cursor: pointer;
+  font-size: 21px;
+  /* margin-left: 10px; */
+  background-color: transparent;
+  border: none;
+  color: #901c1c;
 }
 
 /* *----LIKE-CARD--------------------------- */
@@ -204,7 +213,7 @@ header a {
 }
 
 /* ------------ */
-/* -----LIGHT BOX ----------------------- */
+/* *-----LIGHT BOX ----------------------- */
 /* ------------ */
 
 .lightbox-modal {

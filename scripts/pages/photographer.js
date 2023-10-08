@@ -93,41 +93,43 @@ async function getPhotographers() {
 
           photoContainer.innerHTML += /*html*/ `
         <div class="photo-container-card">
-        <video width="100%" tabindex="0" role="link" aria-label="full screen view" >
-        <source src="../../assets/photographers/${
-          responseJS.photographers[currentIdIndex].name.split(" ")[0]
-        }/${mediaFormat}" type="video/webm" />
-         Download the
-         <a href="/media/cc0-videos/flower.webm">WEBM</a>
-         video.
-        </video>
-          <div class="photo-card-info" aria-label="Title like button and number of likes">
-          <p>${newMedia[i].title}</p> 
-          <span>${
-            newMedia[i].likes
-          }  <i class="fa-regular fa-heart like "  media-id=${
-            newMedia[i].id
-          } type="button" aria-label="like" tabindex="0" ></i></span>
-         </div>
+            <a href="#">
+                <video width="100%" role="link" aria-label="full screen view" > 
+                <source src="../../assets/photographers/${
+                  responseJS.photographers[currentIdIndex].name.split(" ")[0]
+                }/${mediaFormat}" type="video/webm" />
+                </video>
+           </a>
+            <div class="photo-card-info" aria-label="Title like button and number of likes">
+                <p>${newMedia[i].title}</p> 
+                <span>${newMedia[i].likes}  
+                <button class="like" media-id=${
+                  newMedia[i].id
+                } type="button" aria-label="like" tabindex="0">
+               <i class="fa-regular fa-heart"    ></i> 
+                 </button>
+                 </span>
+            </div>
         </div>
         `;
         } else {
           photoContainer.innerHTML += /*html*/ `
         <div class="photo-container-card">
-        
-         <img src="../../assets/photographers/${
-           responseJS.photographers[currentIdIndex].name.split(" ")[0]
-         }/${newMedia[i].image}" alt="photo nommée ${
+          <a href="#">
+            <img src="../../assets/photographers/${
+              responseJS.photographers[currentIdIndex].name.split(" ")[0]
+            }/${newMedia[i].image}" alt="photo nommée ${
             newMedia[i].title
-          }" role="link" aria-label="full screen view" tabindex="0"  />
-          
+          }" role="link" aria-label="full screen view"  />
+          </a>
           <div class="photo-card-info" aria-label="Title like button and number of likes">
           <p>${newMedia[i].title}</p>
-          <span>${
-            newMedia[i].likes
-          }<i class="fa-regular fa-heart like" media-id=${
+          <span>${newMedia[i].likes}
+          <button class="like" media-id=${
             newMedia[i].id
-          } type="button" aria-label="like" tabindex="0" ></i></span>
+          } type="button" aria-label="like" tabindex="0">
+          <i class="fa-regular fa-heart"  ></i>
+          </button></span>
          </div>
         </div>
       `;
@@ -174,8 +176,9 @@ async function getPhotographers() {
       item.addEventListener("click", (e) => {
         // console.log(item.previousSibling.textContent);
 
-        item.classList.toggle("fa-regular");
-        item.classList.toggle("fa-solid");
+        // on cible l'élémeent enfant du button
+        item.firstElementChild.classList.toggle("fa-regular");
+        item.firstElementChild.classList.toggle("fa-solid");
 
         // CurrentLiekTab sert à décomposer les classes de l'icon I en tableau afin de le parcourir avec includes()
         let currentImgId = e.target.attributes[1].value;
@@ -207,7 +210,7 @@ async function getPhotographers() {
     const btnTri = document.getElementById("tri");
     // Constante lié à la partie lightBox
     const photoContainerCard = document.querySelectorAll(
-      ".photo-container-card img, .photo-container-card video"
+      ".photo-container-card > a"
     );
 
     btnTri.addEventListener("change", (e) => {
@@ -266,8 +269,8 @@ async function getPhotographers() {
         item.addEventListener("click", (e) => {
           // console.log(item.previousSibling.textContent);
 
-          item.classList.toggle("fa-regular");
-          item.classList.toggle("fa-solid");
+          item.firstElementChild.classList.toggle("fa-regular");
+          item.firstElementChild.classList.toggle("fa-solid");
 
           // CurrentLiekTab sert à décomposer les classes de l'icon I en tableau afin de le parcourir avec includes()
           let currentImgId = e.target.attributes[1].value;
@@ -288,6 +291,7 @@ async function getPhotographers() {
           }
           console.log(AddedLike);
           console.log(AddedLike.length);
+
           currentLike(AddedLike.length);
           injectLike(AddedLike.length);
         });
