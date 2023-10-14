@@ -251,7 +251,7 @@ async function getPhotographers() {
         injectHtmlPhotographer(sortLike);
       }
 
-      // --LIGHTBOX-RAPPEL-- on rappel la fonction liée à la lightbox une fois le tri effectué
+      // *--LIGHTBOX-RAPPEL-- on rappel la fonction liée à la lightbox une fois le tri effectué
       const photoContainerCard = document.querySelectorAll(
         ".photo-container-card img, .photo-container-card video"
       );
@@ -259,7 +259,29 @@ async function getPhotographers() {
         item.addEventListener("click", (e) => openLightBox(e, index));
       });
 
-      //   --LIKE-RAPPEL-- on rappel la fonction liée aux LIKES une fois le tri effectué
+      photoContainerCard.forEach((item, index) => {
+        const keyDownEvent = (e) => {
+          if (e.key === "Enter") {
+            return openLightBox(e, index);
+          }
+        };
+
+        const focusEvent = () => {
+          console.log("image ou video est FOCUS!");
+          document.addEventListener("keydown", keyDownEvent);
+        };
+
+        const blurEventRemove = () => {
+          console.log("REMOVE l'envent listener");
+          document.removeEventListener("keydown", keyDownEvent);
+        };
+
+        item.addEventListener("focus", focusEvent);
+
+        item.addEventListener("blur", blurEventRemove);
+      });
+
+      // *  --LIKE-RAPPEL-- on rappel la fonction liée aux LIKES une fois le tri effectué
 
       const like = document.querySelectorAll(".like");
       const likeCard = document.querySelector(".like-card");
@@ -301,7 +323,7 @@ async function getPhotographers() {
       injectLike(AddedLike.length);
     });
 
-    // ! OK ----------  4) Light box
+    // ! ----------  4) Light box
 
     // Fonction qui gère l'ouverture de la lightbox et l'injection de l'image correspondante au clique
     const lightBoxModal = document.querySelector(".lightbox-modal");
@@ -313,15 +335,25 @@ async function getPhotographers() {
 
     // ! ---------Gestion clavier click img et video
     photoContainerCard.forEach((item, index) => {
-      item.addEventListener("focus", () => {
+      const keyDownEvent = (e) => {
+        if (e.key === "Enter") {
+          return openLightBox(e, index);
+        }
+      };
+
+      const focusEvent = () => {
         console.log("image ou video est FOCUS!");
-        document.addEventListener("keydown", (e) => {
-          console.log(e.key);
-          if (e.key === "Enter") {
-            openLightBox(e, index);
-          }
-        });
-      });
+        document.addEventListener("keydown", keyDownEvent);
+      };
+
+      const blurEventRemove = () => {
+        console.log("REMOVE l'envent listener");
+        document.removeEventListener("keydown", keyDownEvent);
+      };
+
+      item.addEventListener("focus", focusEvent);
+
+      item.addEventListener("blur", blurEventRemove);
     });
 
     const openLightBox = (e, index) => {
