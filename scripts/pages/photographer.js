@@ -62,7 +62,9 @@ async function getPhotographers() {
     <button class="contact_button" type="button" aria-label="open contact form" onclick="displayModal()">Contactez-moi</button>
     <img src="./assets/photographers/Photographers-ID-Photos/${namePhotographe}.jpg" alt="photo de ${responseJS.photographers[currentIdIndex].name}">`;
 
+    // ! ---------------------------------------------------------------------
     // ! ------ 1) injection des photo de la page photographer
+    // ! ---------------------------------------------------------------------
 
     // Tableau qui va contenir tous les index des photo d'un photographe
     let photographerMedia = [];
@@ -141,7 +143,9 @@ async function getPhotographers() {
 
     injectHtmlPhotographer(photographerMedia);
 
+    // ! ---------------------------------------------------------------------
     // ! 2) injection des likes
+    // ! ---------------------------------------------------------------------
 
     // *---- CLASS LIKE -------------------------------
     const like = document.querySelectorAll(".like");
@@ -175,38 +179,43 @@ async function getPhotographers() {
 
     //  For Each de gestion des boutons like "au clique" individiellement
     like.forEach((item) => {
-      item.addEventListener("click", (e) => {
-        // console.log(item.previousSibling.textContent);
-
-        // on cible l'élémeent enfant du button
-        item.firstElementChild.classList.toggle("fa-regular");
-        item.firstElementChild.classList.toggle("fa-solid");
-
-        // CurrentLiekTab sert à décomposer les classes de l'icon I en tableau afin de le parcourir avec includes()
-        let currentImgId = e.target.attributes[1].value;
-
-        // si l'ID de l'image n'est pas deja incluse dans le tableau, on l'ajoute, sinon on la retire
-        if (!AddedLike.includes(currentImgId)) {
-          AddedLike.push(currentImgId);
-          //    On ajoute +1 au previousSibling
-          item.previousSibling.textContent = `${
-            Number(item.previousSibling.textContent) + 1
-          }`;
-        } else {
-          AddedLike = AddedLike.filter((obj) => obj != currentImgId);
-          //    On retire -1 au previousSibling
-          item.previousSibling.textContent = `${
-            Number(item.previousSibling.textContent) - 1
-          }`;
-        }
-        console.log(AddedLike);
-        console.log(AddedLike.length);
-        currentLike(AddedLike.length);
-        injectLike(AddedLike.length);
-      });
+      item.addEventListener("click", (e) => likeEvent(e, item));
     });
 
+    const likeEvent = (e, item) => {
+      // console.log(item.previousSibling.textContent);
+
+      // on cible l'élémeent enfant du button
+      item.firstElementChild.classList.toggle("fa-regular");
+      item.firstElementChild.classList.toggle("fa-solid");
+
+      // CurrentLiekTab sert à décomposer les classes de l'icon I en tableau afin de le parcourir avec includes()
+      let currentImgId = e.target.attributes[1].value;
+
+      // si l'ID de l'image n'est pas deja incluse dans le tableau, on l'ajoute, sinon on la retire
+      if (!AddedLike.includes(currentImgId)) {
+        AddedLike.push(currentImgId);
+        //    On ajoute +1 au previousSibling
+        item.previousSibling.textContent = `${
+          Number(item.previousSibling.textContent) + 1
+        }`;
+      } else {
+        AddedLike = AddedLike.filter((obj) => obj != currentImgId);
+        //    On retire -1 au previousSibling
+        item.previousSibling.textContent = `${
+          Number(item.previousSibling.textContent) - 1
+        }`;
+      }
+      console.log(AddedLike);
+      console.log(AddedLike.length);
+      currentLike(AddedLike.length);
+      injectLike(AddedLike.length);
+    };
+
+    // ! ---------------------------------------------------------------------
     // ! 3) Tri activable
+    // ! ---------------------------------------------------------------------
+
     // TODO QUESTION? ma constante photoContainerCard est définie en dehors de l'évèneent tri ci -dessous mais si je ne l'a redéfinie pas dedans ensuite, c'esst comme si elle était effacé, je dois donc la redéfinir... PK??
 
     const btnTri = document.getElementById("tri");
@@ -289,41 +298,47 @@ async function getPhotographers() {
       //   Permet de remttre la LikeCard à son score initial sans les likes
       let AddedLike = [];
 
+      //  For Each de gestion des boutons like "au clique" individiellement
       like.forEach((item) => {
-        item.addEventListener("click", (e) => {
-          // console.log(item.previousSibling.textContent);
-
-          item.firstElementChild.classList.toggle("fa-regular");
-          item.firstElementChild.classList.toggle("fa-solid");
-
-          // CurrentLiekTab sert à décomposer les classes de l'icon I en tableau afin de le parcourir avec includes()
-          let currentImgId = e.target.attributes[1].value;
-
-          // si l'ID de l'image n'est pas deja incluse dans le tableau, on l'ajoute, sinon on la retire
-          if (!AddedLike.includes(currentImgId)) {
-            AddedLike.push(currentImgId);
-            //    On ajoute +1 au previousSibling
-            item.previousSibling.textContent = `${
-              Number(item.previousSibling.textContent) + 1
-            }`;
-          } else {
-            AddedLike = AddedLike.filter((obj) => obj != currentImgId);
-            //    On retire -1 au previousSibling
-            item.previousSibling.textContent = `${
-              Number(item.previousSibling.textContent) - 1
-            }`;
-          }
-          console.log(AddedLike);
-          console.log(AddedLike.length);
-
-          currentLike(AddedLike.length);
-          injectLike(AddedLike.length);
-        });
+        item.addEventListener("click", (e) => likeEvent(e, item));
       });
+
+      const likeEvent = (e, item) => {
+        // console.log(item.previousSibling.textContent);
+
+        // on cible l'élémeent enfant du button
+        item.firstElementChild.classList.toggle("fa-regular");
+        item.firstElementChild.classList.toggle("fa-solid");
+
+        // CurrentLiekTab sert à décomposer les classes de l'icon I en tableau afin de le parcourir avec includes()
+        let currentImgId = e.target.attributes[1].value;
+
+        // si l'ID de l'image n'est pas deja incluse dans le tableau, on l'ajoute, sinon on la retire
+        if (!AddedLike.includes(currentImgId)) {
+          AddedLike.push(currentImgId);
+          //    On ajoute +1 au previousSibling
+          item.previousSibling.textContent = `${
+            Number(item.previousSibling.textContent) + 1
+          }`;
+        } else {
+          AddedLike = AddedLike.filter((obj) => obj != currentImgId);
+          //    On retire -1 au previousSibling
+          item.previousSibling.textContent = `${
+            Number(item.previousSibling.textContent) - 1
+          }`;
+        }
+        console.log(AddedLike);
+        console.log(AddedLike.length);
+        currentLike(AddedLike.length);
+        injectLike(AddedLike.length);
+      };
+
       injectLike(AddedLike.length);
     });
 
+    // ! ---------------------------------------------------------------------
     // ! ----------  4) Light box
+    // ! ---------------------------------------------------------------------
 
     // Fonction qui gère l'ouverture de la lightbox et l'injection de l'image correspondante au clique
     const lightBoxModal = document.querySelector(".lightbox-modal");
@@ -464,8 +479,11 @@ async function getPhotographers() {
       });
     };
 
-    // ! ---- injection HTML page contact
-    // TODO tabindex -1 sur tous les ele
+    // ! ---------------------------------------------------------------------
+    // ! 5)---- injection  page contact
+    // ! ---------------------------------------------------------------------
+
+    // TODO tabindex -1 sur tous les else
 
     const headerContact = document.getElementById("contact-header");
 
