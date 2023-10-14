@@ -9,7 +9,9 @@ async function getPhotographers() {
     console.log(responseJS, "objet javascript");
 
     // Mettre dans une fonction displayPhotographer(responseJS)
-    displayPhotographer(responseJS);
+    // displayPhotographer(responseJS);
+
+    return responseJS;
   } catch (error) {
     console.log(error, "erreur");
   }
@@ -24,6 +26,9 @@ async function getPhotographers() {
 // Création d'une fonction displayPhotographer(responseJS)
 
 const displayPhotographer = (responseJS) => {
+  let respPhoto = responseJS; // responseJS.photographers
+  console.log(responseJS.photographers);
+
   for (let i = 0; i <= responseJS.photographers.length - 1; i++) {
     let name = responseJS.photographers[i].name;
 
@@ -36,14 +41,14 @@ const displayPhotographer = (responseJS) => {
     };
 
     let namePhotographe = joinName(name);
-    // console.log(namePhotographe);
+    console.log(namePhotographe);
 
     const photographerSection = document.querySelector(".photographer_section");
 
     photographerSection.innerHTML += /*html*/ `
           <article aria-describedby="carte du photographe ${responseJS.photographers[i].name}">
               <a href="/photographer.html?id=${responseJS.photographers[i].id}" role="link" aria-label="Voir le profil de ${responseJS.photographers[i].name}">
-                  <img src="../../assets/photographers/Photographers ID Photos/${namePhotographe}.jpg"  alt="photo de ${responseJS.photographers[i].name}">
+                  <img src="../../assets/photographers/Photographers-ID-Photos/${namePhotographe}.jpg"  alt="photo de ${responseJS.photographers[i].name}">
                   <h2>${responseJS.photographers[i].name}</h2>
               </a>
               <h3>${responseJS.photographers[i].city},${responseJS.photographers[i].country}</h3>
@@ -65,8 +70,10 @@ async function displayData(photographers) {
 
 async function init() {
   // Récupère les datas des photographes
-  const { photographers } = await getPhotographers();
-  displayData(photographers);
+  const responseJS = await getPhotographers();
+  //!   Commenter cette ligne enlève le message d'errreur (voir pk?)
+  //   displayData(responseJS.photographers);
+  displayPhotographer(responseJS);
 }
 
 init();

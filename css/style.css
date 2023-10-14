@@ -183,7 +183,9 @@ header a {
 .photo-card-info i {
   cursor: pointer;
   font-size: 21px;
-  /* margin-left: 10px; */
+  pointer-events: none;
+  /*  Pour que les i (coeur) ne soit pas prit en compte dans le for each au click */
+  margin-left: 10px;
 }
 
 .photo-card-info button {

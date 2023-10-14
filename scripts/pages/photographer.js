@@ -17,6 +17,8 @@ async function getPhotographers() {
     const responseJS = await responseJSON.json();
     // !let photographers = responseJS.photographers;
 
+    // TODO mettre en paramètre de fonction responseJS pour sortir
+
     // Je crée un tableau vide qui va accueillir les 6 IDs grace à la boucle for
     let IdPhotoTab = [];
 
@@ -58,9 +60,9 @@ async function getPhotographers() {
     <p>${responseJS.photographers[currentIdIndex].tagline}</p>
     </div>
     <button class="contact_button" type="button" aria-label="open contact form" onclick="displayModal()">Contactez-moi</button>
-    <img src="./assets/photographers/Photographers ID Photos/${namePhotographe}.jpg" alt="photo de ${responseJS.photographers[currentIdIndex].name}">`;
+    <img src="./assets/photographers/Photographers-ID-Photos/${namePhotographe}.jpg" alt="photo de ${responseJS.photographers[currentIdIndex].name}">`;
 
-    // ! OK------ 1) injection des photo de la page photographer
+    // ! ------ 1) injection des photo de la page photographer
 
     // Tableau qui va contenir tous les index des photo d'un photographe
     let photographerMedia = [];
@@ -92,36 +94,36 @@ async function getPhotographers() {
           let mediaFormat = newMedia[i].video;
 
           photoContainer.innerHTML += /*html*/ `
-        <div class="photo-container-card">
-            <a href="#">
-                <video width="100%" role="link" aria-label="full screen view" > 
+            <div class="photo-container-card">
+            
+                <video width="100%" role="link" aria-label="full screen view" tabindex=0> 
                 <source src="../../assets/photographers/${
                   responseJS.photographers[currentIdIndex].name.split(" ")[0]
                 }/${mediaFormat}" type="video/webm" />
                 </video>
-           </a>
-            <div class="photo-card-info" aria-label="Title like button and number of likes">
+           
+             <div class="photo-card-info" aria-label="Title like button and number of likes">
                 <p>${newMedia[i].title}</p> 
                 <span>${newMedia[i].likes}  
                 <button class="like" media-id=${
                   newMedia[i].id
                 } type="button" aria-label="like" tabindex="0">
-               <i class="fa-regular fa-heart"    ></i> 
+               <i class="fa-regular fa-heart"></i> 
                  </button>
                  </span>
+             </div>
             </div>
-        </div>
         `;
         } else {
           photoContainer.innerHTML += /*html*/ `
         <div class="photo-container-card">
-          <a href="#">
+          
             <img src="../../assets/photographers/${
               responseJS.photographers[currentIdIndex].name.split(" ")[0]
             }/${newMedia[i].image}" alt="photo nommée ${
             newMedia[i].title
-          }" role="link" aria-label="full screen view"  />
-          </a>
+          }" role="link" aria-label="full screen view" tabindex=0 />
+          
           <div class="photo-card-info" aria-label="Title like button and number of likes">
           <p>${newMedia[i].title}</p>
           <span>${newMedia[i].likes}
@@ -210,7 +212,7 @@ async function getPhotographers() {
     const btnTri = document.getElementById("tri");
     // Constante lié à la partie lightBox
     const photoContainerCard = document.querySelectorAll(
-      ".photo-container-card > a"
+      ".photo-container-card img, .photo-container-card video"
     );
 
     btnTri.addEventListener("change", (e) => {
@@ -309,6 +311,19 @@ async function getPhotographers() {
       item.addEventListener("click", (e) => openLightBox(e, index));
     });
 
+    // ! ---------Gestion clavier click img et video
+    photoContainerCard.forEach((item, index) => {
+      item.addEventListener("focus", () => {
+        console.log("image ou video est FOCUS!");
+        document.addEventListener("keydown", (e) => {
+          console.log(e.key);
+          if (e.key === "Enter") {
+            openLightBox(e, index);
+          }
+        });
+      });
+    });
+
     const openLightBox = (e, index) => {
       // Je déclare une variable initialement égale à "index" qui sera incrémenté ou décrémenté aux cliques flèche droit ou gauche
       let lightboxIndexNew = index;
@@ -321,6 +336,7 @@ async function getPhotographers() {
       lightBoxModal.style.display = "flex";
 
       //   Si ce n'est pas une img j'injecte video, sinon j'injecte img en innerHTML
+      //   TODO voir à sortir la fonction en dehors puis la charger au lieu de openlightbox pour seulement charger le HTML
       const injectHtmlLightbox = () => {
         if (!photographerMedia[lightboxIndexNew].image) {
           lightBoxModal.innerHTML = /*html*/ ` 
@@ -403,8 +419,9 @@ async function getPhotographers() {
       });
 
       //   Gestion des boutons Gauche/droit au clavier
+      //   TODO pensé à removeeventlistener si besoin
       document.addEventListener("keydown", (e) => {
-        // console.log(e.key);
+        console.log(e.key);
         if (e.key === "ArrowRight") {
           clickBtnRight();
         } else if (e.key === "ArrowLeft") {
@@ -416,6 +433,7 @@ async function getPhotographers() {
     };
 
     // ! ---- injection HTML page contact
+    // TODO tabindex -1 sur tous les ele
 
     const headerContact = document.getElementById("contact-header");
 
@@ -452,3 +470,5 @@ async function init() {
 }
 
 init();
+
+// TODO CHoses réalisée: Fetch, page dynamique, exploitié param d'une URL, accessible,tri, like, lightbox, contact, parler des méthodes , map, reduce filter
