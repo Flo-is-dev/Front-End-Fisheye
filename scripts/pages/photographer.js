@@ -466,8 +466,7 @@ async function getPhotographers() {
       });
 
       //   Gestion des boutons Gauche/droit au clavier
-      //   TODO pensé à removeeventlistener si besoin
-      document.addEventListener("keydown", (e) => {
+      const lightboxEventListener = (e) => {
         console.log(e.key);
         if (e.key === "ArrowRight") {
           clickBtnRight();
@@ -475,21 +474,22 @@ async function getPhotographers() {
           clickBtnLeft();
         } else if (e.key === "Escape") {
           closeLightBox();
-        }
-      });
+        } //TODO remove les events
+        document.removeEventListener("keydown", lightboxEventListener);
+      };
+
+      document.addEventListener("keydown", lightboxEventListener);
     };
 
     // ! ---------------------------------------------------------------------
     // ! 5)---- injection  page contact
     // ! ---------------------------------------------------------------------
 
-    // TODO tabindex -1 sur tous les else
-
     const headerContact = document.getElementById("contact-header");
 
     headerContact.innerHTML = /*html*/ `
     <h2>Contactez-moi <br> ${responseJS.photographers[currentIdIndex].name}</h2>
-                    <img src="assets/icons/close.svg" tabindex="1" type="button" aria-label="close contact form"
+                    <img src="assets/icons/close.svg" tabindex="0" type="button" aria-label="close contact form" id="closeBtn"
                         onclick="closeModal()" />`;
 
     // END
