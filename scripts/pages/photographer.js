@@ -59,7 +59,7 @@ async function getPhotographers() {
     <h3>${responseJS.photographers[currentIdIndex].city},${responseJS.photographers[currentIdIndex].country}</h3>
     <p>${responseJS.photographers[currentIdIndex].tagline}</p>
     </div>
-    <button class="contact_button" type="button" aria-label="open contact form" onclick="displayModal()">Contactez-moi</button>
+    <button class="contact_button" type="button" aria-label="ouvrir le formulaire de contact" onclick="displayModal()">Contactez-moi</button>
     <img src="./assets/photographers/Photographers-ID-Photos/${namePhotographe}.jpg" alt="photo de ${responseJS.photographers[currentIdIndex].name}">`;
 
     // ! ---------------------------------------------------------------------
@@ -97,14 +97,16 @@ async function getPhotographers() {
 
           photoContainer.innerHTML += /*html*/ `
             <div class="photo-container-card">
-            
-                <video width="100%" role="link" aria-label="full screen view" tabindex=0> 
+
+                <video width="100%" role="link" aria-label="voir la video ${
+                  newMedia[i].title
+                } en pleine écran" tabindex=0> 
                 <source src="../../assets/photographers/${
                   responseJS.photographers[currentIdIndex].name.split(" ")[0]
                 }/${mediaFormat}" type="video/webm" />
                 </video>
            
-             <div class="photo-card-info" aria-label="Title like button and number of likes">
+             <div class="photo-card-info" aria-label="titre de la photo et nombre de like">
                 <p>${newMedia[i].title}</p> 
                 <span>${newMedia[i].likes}  
                 <button class="like" media-id=${
@@ -124,14 +126,16 @@ async function getPhotographers() {
               responseJS.photographers[currentIdIndex].name.split(" ")[0]
             }/${newMedia[i].image}" alt="photo nommée ${
             newMedia[i].title
-          }" role="link" aria-label="full screen view" tabindex=0 />
+          }" role="link" aria-label="voir la photo ${
+            newMedia[i].title
+          } en pleine écran" tabindex=0 />
           
-          <div class="photo-card-info" aria-label="Title like button and number of likes">
+          <div class="photo-card-info" aria-label="titre de la photo et nombre de like">
           <p>${newMedia[i].title}</p>
           <span>${newMedia[i].likes}
           <button class="like" media-id=${
             newMedia[i].id
-          } type="button" aria-label="like" tabindex="0">
+          } type="button" aria-label="like   avec le" tabindex="0">
           <i class="fa-regular fa-heart"  ></i>
           </button></span>
          </div>
@@ -489,7 +493,7 @@ async function getPhotographers() {
 
     headerContact.innerHTML = /*html*/ `
     <h2>Contactez-moi <br> ${responseJS.photographers[currentIdIndex].name}</h2>
-                    <img src="assets/icons/close.svg" tabindex="0" type="button" aria-label="close contact form" id="closeBtn"
+                    <img src="assets/icons/close.svg" tabindex="0" type="button" aria-label="fermer le formulaire de contact" id="closeBtn"
                         onclick="closeModal()" />`;
 
     // END

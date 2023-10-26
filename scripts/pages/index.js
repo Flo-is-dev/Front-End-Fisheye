@@ -26,13 +26,13 @@ async function getPhotographers() {
 // Création d'une fonction displayPhotographer(responseJS)
 
 const displayPhotographer = (responseJS) => {
-  let respPhoto = responseJS; // responseJS.photographers
   console.log(responseJS.photographers);
 
   for (let i = 0; i <= responseJS.photographers.length - 1; i++) {
+    // let respPhoto = responseJS.photographer[i]; // responseJS.photographers
     let name = responseJS.photographers[i].name;
 
-    // Fonction pour mettre le nom des photographes au bon format (txt collé) pour l'appel d'image
+    // Fonction pour mettre le nom des photographes au bon format (txt collé) pour l'appel d'image (avec destructuring)
     const joinName = (str) => {
       let newName = str.replaceAll("-", "").split(" ");
       //   console.log(newName);
