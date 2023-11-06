@@ -239,7 +239,11 @@ const displayPhotographerLikes = (
 // ! 3) Tri activable
 // ! ---------------------------------------------------------------------
 
-const displayPhotographerTri = (responseJS, currentIdIndex) => {
+const displayPhotographerTri = (
+  photographerMedia,
+  responseJS,
+  currentIdIndex
+) => {
   // TODO QUESTION? ma constante photoContainerCard est définie en dehors de l'évèneent tri ci -dessous mais si je ne l'a redéfinie pas dedans ensuite, c'esst comme si elle était effacé, je dois donc la redéfinir... PK??
 
   const btnTri = document.getElementById("tri");
@@ -247,6 +251,7 @@ const displayPhotographerTri = (responseJS, currentIdIndex) => {
   const photoContainerCard = document.querySelectorAll(
     ".photo-container-card img, .photo-container-card video"
   );
+  const photoContainer = document.querySelector(".photo-container");
 
   btnTri.addEventListener("change", (e) => {
     if (e.target.value === "Date") {
@@ -260,7 +265,7 @@ const displayPhotographerTri = (responseJS, currentIdIndex) => {
       console.log("sortDate", sortDate);
 
       photoContainer.innerHTML = null;
-      injectHtmlPhotographer(sortDate);
+      injectHtmlPhotographer(sortDate, responseJS, currentIdIndex);
     } else if (e.target.value === "Titre") {
       console.log("on a titre");
       const sortTitle = photographerMedia.sort((a, b) => {
@@ -275,13 +280,13 @@ const displayPhotographerTri = (responseJS, currentIdIndex) => {
       console.log("sortTitle", sortTitle);
 
       photoContainer.innerHTML = null;
-      injectHtmlPhotographer(sortTitle);
+      injectHtmlPhotographer(sortTitle, responseJS, currentIdIndex);
     } else if (e.target.value === "Popularité") {
       console.log("on a popularité");
       const sortLike = photographerMedia.sort((a, b) => b.likes - a.likes);
       console.log("sortLike", sortLike);
       photoContainer.innerHTML = null;
-      injectHtmlPhotographer(sortLike);
+      injectHtmlPhotographer(sortLike, responseJS, currentIdIndex);
     }
 
     // *--LIGHTBOX-RAPPEL-- on rappel la fonction liée à la lightbox une fois le tri effectué
@@ -365,7 +370,11 @@ const displayPhotographerTri = (responseJS, currentIdIndex) => {
 // ! ----------  4) Light box
 // ! ---------------------------------------------------------------------
 
-const displayPhotographerLightbox = (responseJS, currentIdIndex) => {
+const displayPhotographerLightbox = (
+  photographerMedia,
+  responseJS,
+  currentIdIndex
+) => {
   // Fonction qui gère l'ouverture de la lightbox et l'injection de l'image correspondante au clique
   const lightBoxModal = document.querySelector(".lightbox-modal");
   const photoContainerCard = document.querySelectorAll(
@@ -557,8 +566,8 @@ async function init() {
   injectHtmlPhotographer(photographerMediaTer, responseJS, currentIdIndex);
 
   displayPhotographerLikes(photographerMediaTer, responseJS, currentIdIndex);
-  displayPhotographerTri(responseJS, currentIdIndex);
-  displayPhotographerLightbox(responseJS, currentIdIndex);
+  displayPhotographerTri(photographerMediaTer, responseJS, currentIdIndex);
+  displayPhotographerLightbox(photographerMediaTer, responseJS, currentIdIndex);
 }
 
 init();
