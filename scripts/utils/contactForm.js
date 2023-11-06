@@ -2,7 +2,6 @@ const overlay = document.querySelector(".overlay-modal");
 const modal = document.getElementById("contact_modal");
 const contactButton = document.querySelector(".contact_button");
 const contactForm = document.getElementById("contactForm");
-
 const main = document.getElementById("main");
 const header = document.querySelector("header");
 

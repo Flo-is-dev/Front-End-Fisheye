@@ -8,9 +8,6 @@ async function getPhotographers() {
 
     console.log(responseJS, "objet javascript");
 
-    // Mettre dans une fonction displayPhotographer(responseJS)
-    // displayPhotographer(responseJS);
-
     return responseJS;
   } catch (error) {
     console.log(error, "erreur");
@@ -23,7 +20,7 @@ async function getPhotographers() {
 }
 
 // ----------------------------------------------------------------------
-// Création d'une fonction displayPhotographer(responseJS)
+// Création d'une fonction displayPhotographer(responseJS) qui utilise le responseJS obtenu via le fetch
 
 const displayPhotographer = (responseJS) => {
   console.log(responseJS.photographers);
