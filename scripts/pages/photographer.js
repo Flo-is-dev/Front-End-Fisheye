@@ -161,6 +161,8 @@ const injectHtmlPhotographer = (newMedia, responseJS, currentIdIndex) => {
 // ! ---------------------------------------------------------------------
 // ! 2) injection des likes
 // ! ---------------------------------------------------------------------
+// TODO extraire la fonction injecte like pour qu'elle soit diponible aussiu dans la partie tri
+const injectLike = (value, currentLike) => {};
 
 const displayPhotographerLikes = (
   photographerMediaBis,
