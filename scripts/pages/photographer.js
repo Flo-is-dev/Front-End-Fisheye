@@ -162,7 +162,6 @@ const injectHtmlPhotographer = (newMedia, responseJS, currentIdIndex) => {
 // ! 2) injection des likes
 // ! ---------------------------------------------------------------------
 // TODO extraire la fonction injecte like pour qu'elle soit diponible aussiu dans la partie tri
-const injectLike = (value, currentLike) => {};
 
 const displayPhotographerLikes = (
   photographerMediaBis,
@@ -184,7 +183,6 @@ const displayPhotographerLikes = (
         return (sum += currentNote);
       }, 1) + number;
   //   console.log(currentLike(0));
-  console.log(currentLike());
 
   // ------- AddedLike est un tableau qui regroupera les ID des bouton cliqués. Avec length on a la longueur du tableau et donc le nombre de like à ajouter au total
   let AddedLike = [];
@@ -238,9 +236,142 @@ const displayPhotographerLikes = (
 };
 
 // ! ---------------------------------------------------------------------
-// ! 3) Tri activable
+// ! 4) Light box (part 1)
 // ! ---------------------------------------------------------------------
 
+const openLightBox = (
+  e,
+  index,
+  photographerMedia,
+  responseJS,
+  currentIdIndex
+) => {
+  // Je déclare une variable initialement égale à "index" qui sera incrémenté ou décrémenté aux cliques flèche droit ou gauche
+  let lightboxIndexNew = index;
+
+  console.log("ca ouvre la modale photo", index);
+  console.log(photographerMedia);
+  //   console.log(photographerMedia[index]);
+  //   console.log(responseJS.photographers[currentIdIndex].name.split(" ")[0]);
+
+  lightBoxModal.style.display = "flex";
+
+  //   Si ce n'est pas une img j'injecte video, sinon j'injecte img en innerHTML
+  //   TODO voir à sortir la fonction en dehors puis la charger au lieu de openlightbox pour seulement charger le HTML
+  const injectHtmlLightbox = () => {
+    if (!photographerMedia[lightboxIndexNew].image) {
+      lightBoxModal.innerHTML = /*html*/ ` 
+      
+                <i class="fa-solid fa-xmark" aria-label="close lightbox" onclick="closeLightBox()"></i>
+                <div class="btn-left" aria-label="previous media">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </div>
+                <div class="btn-right" aria-label="next media">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+                    <div class="lightbox-photo">
+                        <video controls width="100%" role="media" aria-label="current video" >
+                        <source src="../../assets/photographers/${
+                          responseJS.photographers[currentIdIndex].name.split(
+                            " "
+                          )[0]
+                        }/${
+        photographerMedia[lightboxIndexNew].video
+      }" type="video/webm" />
+                        Download the
+                        <a href="/media/cc0-videos/flower.webm">WEBM</a>
+                        video.
+                        </video>
+                        <h3>${photographerMedia[index].title}</h3>
+                    </div>`;
+    } else {
+      lightBoxModal.innerHTML = /*html*/ ` 
+      
+                <i class="fa-solid fa-xmark" aria-label="close lightbox" onclick="closeLightBox()"></i>
+                <div class="btn-left" aria-label="previous media">
+                <i class="fa-solid fa-chevron-left"></i>
+                    </div>
+                    <div class="btn-right" aria-label="next media">
+                <i class="fa-solid fa-chevron-right"></i>
+                </div>
+                    <div class="lightbox-photo">
+                    <img src="../../assets/photographers/${
+                      responseJS.photographers[currentIdIndex].name.split(
+                        " "
+                      )[0]
+                    }/${
+        photographerMedia[lightboxIndexNew].image
+      }" alt="photo nommée ${
+        photographerMedia[lightboxIndexNew].title
+      }" role="media" aria-label="current image" >
+                    <h3>${photographerMedia[lightboxIndexNew].title}</h3>
+                </div>`;
+    }
+  };
+
+  injectHtmlLightbox();
+
+  //   Après l'injection HTML je gère les flèches G/D
+
+  const btnRight = document.querySelector(".btn-right");
+  const btnLeft = document.querySelector(".btn-left");
+
+  //   On déclare les fonction qui seront joué aux evement click souris ou Keypress
+  const clickBtnRight = () => {
+    lightboxIndexNew = lightboxIndexNew + 1;
+    if (lightboxIndexNew > photographerMedia.length - 1) {
+      lightboxIndexNew = 0;
+    }
+    // on rejoue la fonction openLightBox pour mettre à jour le HTML
+    openLightBox(
+      e,
+      lightboxIndexNew,
+      photographerMedia,
+      responseJS,
+      currentIdIndex
+    );
+  };
+
+  btnRight.addEventListener("click", () => {
+    clickBtnRight();
+  });
+
+  const clickBtnLeft = () => {
+    lightboxIndexNew = lightboxIndexNew - 1;
+    if (lightboxIndexNew < 0) {
+      lightboxIndexNew = photographerMedia.length - 1;
+    }
+    openLightBox(
+      e,
+      lightboxIndexNew,
+      photographerMedia,
+      responseJS,
+      currentIdIndex
+    );
+  };
+  btnLeft.addEventListener("click", () => {
+    clickBtnLeft();
+  });
+
+  //   Gestion des boutons Gauche/droit au clavier
+  const lightboxEventListener = (e) => {
+    console.log(e.key);
+    if (e.key === "ArrowRight") {
+      clickBtnRight();
+    } else if (e.key === "ArrowLeft") {
+      clickBtnLeft();
+    } else if (e.key === "Escape") {
+      closeLightBox();
+    } //TODO remove les events
+    document.removeEventListener("keydown", lightboxEventListener);
+  };
+
+  document.addEventListener("keydown", lightboxEventListener);
+};
+
+// ! ---------------------------------------------------------------------
+// ! 3) Tri activable
+// ! ---------------------------------------------------------------------
 const displayPhotographerTri = (
   photographerMedia,
   responseJS,
@@ -296,13 +427,21 @@ const displayPhotographerTri = (
       ".photo-container-card img, .photo-container-card video"
     );
     photoContainerCard.forEach((item, index) => {
-      item.addEventListener("click", (e) => openLightBox(e, index));
+      item.addEventListener("click", (e) =>
+        openLightBox(e, index, photographerMedia, responseJS, currentIdIndex)
+      );
     });
 
     photoContainerCard.forEach((item, index) => {
       const keyDownEvent = (e) => {
         if (e.key === "Enter") {
-          return openLightBox(e, index);
+          return openLightBox(
+            e,
+            index,
+            photographerMedia,
+            responseJS,
+            currentIdIndex
+          );
         }
       };
 
@@ -323,48 +462,7 @@ const displayPhotographerTri = (
 
     // *  --LIKE-RAPPEL-- on rappel la fonction liée aux LIKES une fois le tri effectué
 
-    const like = document.querySelectorAll(".like");
-    const likeCard = document.querySelector(".like-card");
-
-    //   Permet de remttre la LikeCard à son score initial sans les likes
-    let AddedLike = [];
-
-    //  For Each de gestion des boutons like "au clique" individiellement
-    like.forEach((item) => {
-      item.addEventListener("click", (e) => likeEvent(e, item));
-    });
-
-    const likeEvent = (e, item) => {
-      // console.log(item.previousSibling.textContent);
-
-      // on cible l'élémeent enfant du button
-      item.firstElementChild.classList.toggle("fa-regular");
-      item.firstElementChild.classList.toggle("fa-solid");
-
-      // CurrentLiekTab sert à décomposer les classes de l'icon I en tableau afin de le parcourir avec includes()
-      let currentImgId = e.target.attributes[1].value;
-
-      // si l'ID de l'image n'est pas deja incluse dans le tableau, on l'ajoute, sinon on la retire
-      if (!AddedLike.includes(currentImgId)) {
-        AddedLike.push(currentImgId);
-        //    On ajoute +1 au previousSibling
-        item.previousSibling.textContent = `${
-          Number(item.previousSibling.textContent) + 1
-        }`;
-      } else {
-        AddedLike = AddedLike.filter((obj) => obj != currentImgId);
-        //    On retire -1 au previousSibling
-        item.previousSibling.textContent = `${
-          Number(item.previousSibling.textContent) - 1
-        }`;
-      }
-      console.log(AddedLike);
-      console.log(AddedLike.length);
-      currentLike(AddedLike.length);
-      injectLike(AddedLike.length);
-    };
-
-    injectLike(AddedLike.length);
+    displayPhotographerLikes(photographerMedia, responseJS, currentIdIndex);
   });
 };
 
@@ -385,8 +483,9 @@ const displayPhotographerLightbox = (
 
   // Je cible au clique toutes les card photos/video
 
+  //   TODO
   const openTest = (e, index) => {
-    openLightBox(e, index);
+    openLightBox(e, index, photographerMedia, responseJS, currentIdIndex);
   };
 
   photoContainerCard.forEach((item, index) => {
@@ -396,11 +495,17 @@ const displayPhotographerLightbox = (
     item.removeEventListener("click", (e) => openTest(e, index));
   });
 
-  // ! ---------Gestion clavier click img et video
+  // ---------Gestion clavier click img et video
   photoContainerCard.forEach((item, index) => {
     const keyDownEvent = (e) => {
       if (e.key === "Enter") {
-        return openLightBox(e, index);
+        return openLightBox(
+          e,
+          index,
+          photographerMedia,
+          responseJS,
+          currentIdIndex
+        );
       }
     };
 
@@ -418,116 +523,6 @@ const displayPhotographerLightbox = (
 
     item.addEventListener("blur", blurEventRemove);
   });
-
-  const openLightBox = (e, index) => {
-    // Je déclare une variable initialement égale à "index" qui sera incrémenté ou décrémenté aux cliques flèche droit ou gauche
-    let lightboxIndexNew = index;
-
-    console.log("ca ouvre la modale photo", index);
-    console.log(photographerMedia);
-    //   console.log(photographerMedia[index]);
-    //   console.log(responseJS.photographers[currentIdIndex].name.split(" ")[0]);
-
-    lightBoxModal.style.display = "flex";
-
-    //   Si ce n'est pas une img j'injecte video, sinon j'injecte img en innerHTML
-    //   TODO voir à sortir la fonction en dehors puis la charger au lieu de openlightbox pour seulement charger le HTML
-    const injectHtmlLightbox = () => {
-      if (!photographerMedia[lightboxIndexNew].image) {
-        lightBoxModal.innerHTML = /*html*/ ` 
-  
-            <i class="fa-solid fa-xmark" aria-label="close lightbox" onclick="closeLightBox()"></i>
-            <div class="btn-left" aria-label="previous media">
-                <i class="fa-solid fa-chevron-left"></i>
-            </div>
-            <div class="btn-right" aria-label="next media">
-                <i class="fa-solid fa-chevron-right"></i>
-            </div>
-                <div class="lightbox-photo">
-                    <video controls width="100%" role="media" aria-label="current video" >
-                    <source src="../../assets/photographers/${
-                      responseJS.photographers[currentIdIndex].name.split(
-                        " "
-                      )[0]
-                    }/${
-          photographerMedia[lightboxIndexNew].video
-        }" type="video/webm" />
-                    Download the
-                    <a href="/media/cc0-videos/flower.webm">WEBM</a>
-                    video.
-                    </video>
-                    <h3>${photographerMedia[index].title}</h3>
-                </div>`;
-      } else {
-        lightBoxModal.innerHTML = /*html*/ ` 
-  
-            <i class="fa-solid fa-xmark" aria-label="close lightbox" onclick="closeLightBox()"></i>
-            <div class="btn-left" aria-label="previous media">
-            <i class="fa-solid fa-chevron-left"></i>
-                </div>
-                <div class="btn-right" aria-label="next media">
-            <i class="fa-solid fa-chevron-right"></i>
-            </div>
-                <div class="lightbox-photo">
-                <img src="../../assets/photographers/${
-                  responseJS.photographers[currentIdIndex].name.split(" ")[0]
-                }/${
-          photographerMedia[lightboxIndexNew].image
-        }" alt="photo nommée ${
-          photographerMedia[lightboxIndexNew].title
-        }" role="media" aria-label="current image" >
-                <h3>${photographerMedia[lightboxIndexNew].title}</h3>
-            </div>`;
-      }
-    };
-
-    injectHtmlLightbox();
-
-    //   Après l'injection HTML je gère les flèches G/D
-
-    const btnRight = document.querySelector(".btn-right");
-    const btnLeft = document.querySelector(".btn-left");
-
-    //   On déclare les fonction qui seront joué aux evement click souris ou Keypress
-    const clickBtnRight = () => {
-      lightboxIndexNew = lightboxIndexNew + 1;
-      if (lightboxIndexNew > photographerMedia.length - 1) {
-        lightboxIndexNew = 0;
-      }
-      // on rejoue la fonction openLightBox pour mettre à jour le HTML
-      openLightBox(e, lightboxIndexNew);
-    };
-
-    btnRight.addEventListener("click", () => {
-      clickBtnRight();
-    });
-
-    const clickBtnLeft = () => {
-      lightboxIndexNew = lightboxIndexNew - 1;
-      if (lightboxIndexNew < 0) {
-        lightboxIndexNew = photographerMedia.length - 1;
-      }
-      openLightBox(e, lightboxIndexNew);
-    };
-    btnLeft.addEventListener("click", () => {
-      clickBtnLeft();
-    });
-
-    //   Gestion des boutons Gauche/droit au clavier
-    const lightboxEventListener = (e) => {
-      console.log(e.key);
-      if (e.key === "ArrowRight") {
-        clickBtnRight();
-      } else if (e.key === "ArrowLeft") {
-        clickBtnLeft();
-      } else if (e.key === "Escape") {
-        closeLightBox();
-      } //TODO remove les events
-      document.removeEventListener("keydown", lightboxEventListener);
-    };
-
-    document.addEventListener("keydown", lightboxEventListener);
-  };
 };
 
 // ! ---------------------------------------------------------------------
@@ -544,21 +539,13 @@ const displayPhotographerContact = (responseJS, currentIdIndex) => {
   // END
 };
 
-// async function displayData(photographers) {
-//   const photographersSection = document.querySelector(".photographer_section");
-
-//   photographers.forEach((photographer) => {
-//       const photographerModel = photographerTemplate(photographer);
-//     const userCardDOM = photographerModel.getUserCardDOM();
-//     photographersSection.appendChild(userCardDOM);
-//   });
-// }
-
 async function init() {
   // Récupère les datas des photographes
   const { photographers } = await getPhotographers();
   const responseJS = await getPhotographers();
+
   const currentIdIndex = currentIdIndexFunction(responseJS);
+  console.log("TOTO", responseJS.photographers);
   //   displayData(photographers);
   displayPhotographerContact(responseJS, currentIdIndex);
   currentIdIndexFunction(responseJS);
