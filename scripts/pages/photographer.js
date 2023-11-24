@@ -311,13 +311,14 @@ const openLightBox = (
 
   injectHtmlLightbox();
 
+  //   --------------------
   //   Après l'injection HTML je gère les flèches G/D
 
   const btnRight = document.querySelector(".btn-right");
   const btnLeft = document.querySelector(".btn-left");
 
   //   On déclare les fonction qui seront joué aux evement click souris ou Keypress
-  const clickBtnRight = () => {
+  const clickBtnRight = (e) => {
     lightboxIndexNew = lightboxIndexNew + 1;
     if (lightboxIndexNew > photographerMedia.length - 1) {
       lightboxIndexNew = 0;
@@ -330,11 +331,19 @@ const openLightBox = (
       responseJS,
       currentIdIndex
     );
+
+    // ! PB de suppression de l'enventListener, est-ce le bon endroit?
+    btnRight.removeEventListener("click", clickBtnRightHandler);
+    console.log("remove effectué OFF");
+    document.removeEventListener("keydown", lightboxEventListener);
   };
 
-  btnRight.addEventListener("click", () => {
+  // Stockez la fonction dans une variable pour la remove
+  const clickBtnRightHandler = () => {
     clickBtnRight();
-  });
+  };
+
+  btnRight.addEventListener("click", clickBtnRightHandler);
 
   const clickBtnLeft = () => {
     lightboxIndexNew = lightboxIndexNew - 1;
@@ -348,11 +357,13 @@ const openLightBox = (
       responseJS,
       currentIdIndex
     );
+    document.removeEventListener("keydown", lightboxEventListener);
   };
   btnLeft.addEventListener("click", () => {
     clickBtnLeft();
   });
 
+  //   ---------------------------------
   //   Gestion des boutons Gauche/droit au clavier
   const lightboxEventListener = (e) => {
     console.log(e.key);
@@ -483,7 +494,6 @@ const displayPhotographerLightbox = (
 
   // Je cible au clique toutes les card photos/video
 
-  //   TODO
   const openTest = (e, index) => {
     openLightBox(e, index, photographerMedia, responseJS, currentIdIndex);
   };
