@@ -1,5 +1,3 @@
-//Mettre le code JavaScript lié à la page photographer.html
-
 // *----Récupération de l'ID ciblé
 
 const urlSearchParams = new URLSearchParams(window.location.search);
@@ -102,66 +100,22 @@ const injectHtmlPhotographer = (newMedia, responseJS, currentIdIndex) => {
   for (let i = 0; i < newMedia.length; i++) {
     // Pour gérer le cas de jpg ou video je passe par une variable intermédiaire et on vérifie si elle est undifined,
 
-    let mediaFormat = newMedia[i].image;
+    const photographerFirstName =
+      responseJS.photographers[currentIdIndex].name.split(" ")[0];
 
     //   Si c'est une vidéo on inject le code IF sinon img on injecte le ELSE
-    if (!mediaFormat) {
-      let mediaFormat = newMedia[i].video;
 
-      photoContainer.innerHTML += /*html*/ `
-              <div class="photo-container-card">
-  
-                  <video width="100%" role="link" aria-label="voir la video ${
-                    newMedia[i].title
-                  } en pleine écran" tabindex=0> 
-                  <source src="../../assets/photographers/${
-                    responseJS.photographers[currentIdIndex].name.split(" ")[0]
-                  }/${mediaFormat}" type="video/webm" />
-                  </video>
-             
-               <div class="photo-card-info" aria-label="titre de la photo et nombre de like">
-                  <p>${newMedia[i].title}</p> 
-                  <span>${newMedia[i].likes}  
-                  <button class="like" media-id=${
-                    newMedia[i].id
-                  } type="button" aria-label="like" tabindex="0">
-                 <i class="fa-regular fa-heart"></i> 
-                   </button>
-                   </span>
-               </div>
-              </div>
-          `;
-    } else {
-      photoContainer.innerHTML += /*html*/ `
-          <div class="photo-container-card">
-            
-              <img src="../../assets/photographers/${
-                responseJS.photographers[currentIdIndex].name.split(" ")[0]
-              }/${newMedia[i].image}" alt="photo nommée ${
-        newMedia[i].title
-      }" role="link" aria-label="voir la photo ${
-        newMedia[i].title
-      } en pleine écran" tabindex=0 />
-            
-            <div class="photo-card-info" aria-label="titre de la photo et nombre de like">
-            <p>${newMedia[i].title}</p>
-            <span>${newMedia[i].likes}
-            <button class="like" media-id=${
-              newMedia[i].id
-            } type="button" aria-label="like   avec le" tabindex="0">
-            <i class="fa-regular fa-heart"  ></i>
-            </button></span>
-           </div>
-          </div>
-        `;
-    }
+    const photoContainerInnerHTML = MediaFactory(
+      newMedia[i],
+      photographerFirstName
+    ).MediaDisplay();
+    photoContainer.innerHTML += photoContainerInnerHTML;
   }
 };
 
 // ! ---------------------------------------------------------------------
 // ! 2) injection des likes
 // ! ---------------------------------------------------------------------
-// TODO extraire la fonction injecte like pour qu'elle soit diponible aussiu dans la partie tri
 
 const displayPhotographerLikes = (
   photographerMediaBis,
@@ -257,7 +211,7 @@ const openLightBox = (
   lightBoxModal.style.display = "flex";
 
   //   Si ce n'est pas une img j'injecte video, sinon j'injecte img en innerHTML
-  //   TODO voir à sortir la fonction en dehors puis la charger au lieu de openlightbox pour seulement charger le HTML
+
   const injectHtmlLightbox = () => {
     if (!photographerMedia[lightboxIndexNew].image) {
       lightBoxModal.innerHTML = /*html*/ ` 
@@ -332,7 +286,6 @@ const openLightBox = (
       currentIdIndex
     );
 
-    // ! PB de suppression de l'enventListener, est-ce le bon endroit?
     btnRight.removeEventListener("click", clickBtnRightHandler);
     console.log("remove effectué OFF");
     document.removeEventListener("keydown", lightboxEventListener);
@@ -388,8 +341,6 @@ const displayPhotographerTri = (
   responseJS,
   currentIdIndex
 ) => {
-  // TODO QUESTION? ma constante photoContainerCard est définie en dehors de l'évèneent tri ci -dessous mais si je ne l'a redéfinie pas dedans ensuite, c'esst comme si elle était effacé, je dois donc la redéfinir... PK??
-
   const btnTri = document.getElementById("tri");
   // Constante lié à la partie lightBox
   const photoContainerCard = document.querySelectorAll(
