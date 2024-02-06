@@ -277,8 +277,8 @@ const openLightBox = (
     // Ajoutez des gestionnaires d'événements de clavier pour les boutons
     btnClose.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
+        // location.reload();
         closeLightBox();
-        location.reload();
       }
     });
 
