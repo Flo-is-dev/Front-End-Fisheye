@@ -262,10 +262,14 @@ const openLightBox = (
                 </div>`;
     }
     // Sélectionnez tous les autres éléments de la lightbox qui ne doivent pas être accessibles via Tab
-    const nonTabElements = document.querySelectorAll(':not([tabindex="1"])');
-
+    // const focusableTabindexElements = document.querySelectorAll(
+    //   ':not([tabindex="1"])'
+    // );
+    const focusableTabindexElements = document.querySelectorAll(
+      '[tabindex]:not([tabindex="1"])'
+    );
     // Parcourez ces éléments et définissez leur attribut tabindex="-1"
-    nonTabElements.forEach((element) => {
+    focusableTabindexElements.forEach((element) => {
       element.setAttribute("tabindex", "-1");
     });
 
@@ -279,6 +283,10 @@ const openLightBox = (
       if (e.key === "Enter") {
         // location.reload();
         closeLightBox();
+
+        focusableTabindexElements.forEach((element) => {
+          element.setAttribute("tabindex", "0");
+        });
       }
     });
 
