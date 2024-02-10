@@ -212,6 +212,18 @@ const openLightBox = (
 
   //   Si ce n'est pas une img j'injecte video, sinon j'injecte img en innerHTML
 
+  // Sélectionnez tous les autres éléments de la lightbox qui ne doivent pas être accessibles via Tab
+  // const focusableTabindexElements = document.querySelectorAll(
+  //   ':not([tabindex="1"])'
+  // );
+  const focusableTabindexElements = document.querySelectorAll(
+    '[tabindex]:not([tabindex="1"])'
+  );
+  // Parcourez ces éléments et définissez leur attribut tabindex="-1"
+  focusableTabindexElements.forEach((element) => {
+    element.setAttribute("tabindex", "-1");
+  });
+
   const injectHtmlLightbox = () => {
     if (!photographerMedia[lightboxIndexNew].image) {
       lightBoxModal.innerHTML = /*html*/ ` 
@@ -241,11 +253,11 @@ const openLightBox = (
     } else {
       lightBoxModal.innerHTML = /*html*/ ` 
       
-                <i class="fa-solid fa-xmark" tabindex="1" aria-label="close lightbox" onclick="closeLightBox()"></i>
-                <div class="btn-left" tabindex="1" aria-label="previous media">
+                <i class="fa-solid fa-xmark" tabindex="1" aria-label="fermer la fenêtre" onclick="closeLightBox()"></i>
+                <div class="btn-left" tabindex="1" aria-label="voir le media précédent">
                 <i class="fa-solid fa-chevron-left"></i>
                     </div>
-                    <div class="btn-right" tabindex="1" aria-label="next media">
+                    <div class="btn-right" tabindex="1" aria-label="voir le media suivant">
                 <i class="fa-solid fa-chevron-right"></i>
                 </div>
                     <div class="lightbox-photo">
@@ -257,21 +269,10 @@ const openLightBox = (
         photographerMedia[lightboxIndexNew].image
       }" alt="photo nommée ${
         photographerMedia[lightboxIndexNew].title
-      }" role="media" aria-label="current image" >
+      }" role="media" aria-label="image actuelle" >
                     <h3>${photographerMedia[lightboxIndexNew].title}</h3>
                 </div>`;
     }
-    // Sélectionnez tous les autres éléments de la lightbox qui ne doivent pas être accessibles via Tab
-    // const focusableTabindexElements = document.querySelectorAll(
-    //   ':not([tabindex="1"])'
-    // );
-    const focusableTabindexElements = document.querySelectorAll(
-      '[tabindex]:not([tabindex="1"])'
-    );
-    // Parcourez ces éléments et définissez leur attribut tabindex="-1"
-    focusableTabindexElements.forEach((element) => {
-      element.setAttribute("tabindex", "-1");
-    });
 
     // Sélectionnez les boutons de la lightbox
     const btnClose = document.querySelector(".fa-xmark");
@@ -281,7 +282,6 @@ const openLightBox = (
     // Ajoutez des gestionnaires d'événements de clavier pour les boutons
     btnClose.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
-        // location.reload();
         closeLightBox();
 
         focusableTabindexElements.forEach((element) => {
@@ -366,6 +366,9 @@ const openLightBox = (
       clickBtnLeft();
     } else if (e.key === "Escape") {
       closeLightBox();
+      focusableTabindexElements.forEach((element) => {
+        element.setAttribute("tabindex", "0");
+      });
     } //TODO remove les events
     document.removeEventListener("keydown", lightboxEventListener);
   };

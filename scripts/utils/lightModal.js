@@ -1,7 +1,6 @@
 const lightBoxModal = document.querySelector(".lightbox-modal");
 
 const closeLightBox = () => {
-  //   location.reload();
   console.log("ca close la lightbox");
   lightBoxModal.style.display = "none";
 };
