@@ -1,5 +1,4 @@
 const MediaFactory = (media, photographerFirstName) => {
-  //   console.log(media);
   if (media.image) {
     return {
       media,
@@ -19,7 +18,6 @@ const MediaFactory = (media, photographerFirstName) => {
       },
     };
   } else if (media.video) {
-    // hasOwnProperty
     return {
       media,
       MediaDisplay() {

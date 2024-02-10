@@ -19,13 +19,12 @@ function closeModal() {
 
 const putFocusOn = () => {
   const closeBtn = document.getElementById("closeBtn");
-  console.log("croix contact est focus");
   closeBtn.focus();
 };
 
 const putFocusOnTri = () => {
   const btnTri = document.getElementById("tri");
-  console.log("btntri est focus avec fermeture contact form");
+
   btnTri.focus();
 };
 
@@ -33,18 +32,15 @@ const crossAnimation = () => {
   const closeBtn = document.getElementById("closeBtn");
 
   const btnDown = (e) => {
-    console.log(e.key);
     if (e.key === "Enter") {
       return closeModal();
     }
   };
   const focusEventCross = () => {
-    console.log("l'event sur la croix est FOCUS!");
     document.addEventListener("keydown", btnDown);
   };
   const blurEventCross = () => {
     document.removeEventListener("keydown", btnDown);
-    console.log("l'event sur la croix est BLUR!");
   };
 
   closeBtn.addEventListener("focus", focusEventCross);

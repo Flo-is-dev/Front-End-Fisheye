@@ -54,7 +54,7 @@ const currentIdIndexFunction = (responseJS) => {
   const isCurrentID = (element) => {
     return element === Number(param);
   };
-  console.log(IdPhotoTab);
+
   let currentIdIndex = IdPhotoTab.findIndex(isCurrentID);
 
   return currentIdIndex;
@@ -67,7 +67,7 @@ const displayProfileHeader = (responseJS, currentIdIndex) => {
   // Fonction pour mettre le nom des photographes au bon format (txt collé) pour l'appel d'image
   const joinName = (str) => {
     let newName = str.replaceAll("-", "").split(" ");
-    console.log(newName);
+
     let [n, p] = newName;
     return [...n].join("") + [...p].join("");
   };
@@ -89,10 +89,8 @@ const displayProfileHeader = (responseJS, currentIdIndex) => {
 // ! ---------------------------------------------------------------------
 // ! ------ 1) injection des photo de la page photographer
 // ! ---------------------------------------------------------------------
-//   console.log(responseJS.media[0].photographerId);
 
 // Parcour pour atteindre les fichier photographe que je vais injecter
-// console.log(responseJS.photographers[currentIdIndex].name);
 
 // inject avec for photographerMedia[i]
 const injectHtmlPhotographer = (newMedia, responseJS, currentIdIndex) => {
@@ -136,9 +134,8 @@ const displayPhotographerLikes = (
       .reduce((sum, currentNote) => {
         return (sum += currentNote);
       }, 1) + number;
-  //   console.log(currentLike(0));
 
-  // ------- AddedLike est un tableau qui regroupera les ID des bouton cliqués. Avec length on a la longueur du tableau et donc le nombre de like à ajouter au total
+  // ------- AddedLike est un tableau qui regroupera les ID des boutons like cliqués. Avec length on a la longueur du tableau et donc le nombre de like à ajouter au total
   let AddedLike = [];
 
   // ----- injectLike() sert à l'injection html de la "LIKE CARD"
@@ -159,8 +156,6 @@ const displayPhotographerLikes = (
   });
 
   const likeEvent = (e, item) => {
-    // console.log(item.previousSibling.textContent);
-
     // on cible l'élémeent enfant du button
     item.firstElementChild.classList.toggle("fa-regular");
     item.firstElementChild.classList.toggle("fa-solid");
@@ -203,23 +198,14 @@ const openLightBox = (
   // Je déclare une variable initialement égale à "index" qui sera incrémenté ou décrémenté aux cliques flèche droit ou gauche
   let lightboxIndexNew = index;
 
-  console.log("ca ouvre la modale photo", index);
-  console.log(photographerMedia);
-  //   console.log(photographerMedia[index]);
-  //   console.log(responseJS.photographers[currentIdIndex].name.split(" ")[0]);
-
   lightBoxModal.style.display = "flex";
 
-  //   Si ce n'est pas une img j'injecte video, sinon j'injecte img en innerHTML
+  // Sélectionne tous les autres éléments de la lightbox qui ne doivent pas être accessibles via Tab
 
-  // Sélectionnez tous les autres éléments de la lightbox qui ne doivent pas être accessibles via Tab
-  // const focusableTabindexElements = document.querySelectorAll(
-  //   ':not([tabindex="1"])'
-  // );
   const focusableTabindexElements = document.querySelectorAll(
     '[tabindex]:not([tabindex="1"])'
   );
-  // Parcourez ces éléments et définissez leur attribut tabindex="-1"
+  // Parcoure ces éléments et défini leur attribut tabindex="-1"
   focusableTabindexElements.forEach((element) => {
     element.setAttribute("tabindex", "-1");
   });
@@ -274,12 +260,12 @@ const openLightBox = (
                 </div>`;
     }
 
-    // Sélectionnez les boutons de la lightbox
+    // Sélectionne les boutons de la lightbox
     const btnClose = document.querySelector(".fa-xmark");
     const btnLeft = document.querySelector(".btn-left");
     const btnRight = document.querySelector(".btn-right");
 
-    // Ajoutez des gestionnaires d'événements de clavier pour les boutons
+    // Ajoute des gestionnaires d'événements de clavier pour les boutons
     btnClose.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         closeLightBox();
@@ -305,8 +291,7 @@ const openLightBox = (
 
   injectHtmlLightbox();
 
-  //   --------------------
-  //   Après l'injection HTML je gère les flèches G/D
+  //   Après l'injection HTML je gère la logic des flèches G/D
 
   const btnRight = document.querySelector(".btn-right");
   const btnLeft = document.querySelector(".btn-left");
@@ -327,7 +312,7 @@ const openLightBox = (
     );
 
     btnRight.removeEventListener("click", clickBtnRightHandler);
-    console.log("remove effectué OFF");
+
     document.removeEventListener("keydown", lightboxEventListener);
   };
 
@@ -356,10 +341,8 @@ const openLightBox = (
     clickBtnLeft();
   });
 
-  //   ---------------------------------
   //   Gestion des boutons Gauche/droit au clavier
   const lightboxEventListener = (e) => {
-    console.log(e.key);
     if (e.key === "ArrowRight") {
       clickBtnRight();
     } else if (e.key === "ArrowLeft") {
@@ -369,7 +352,7 @@ const openLightBox = (
       focusableTabindexElements.forEach((element) => {
         element.setAttribute("tabindex", "0");
       });
-    } //TODO remove les events
+    }
     document.removeEventListener("keydown", lightboxEventListener);
   };
 
@@ -385,7 +368,7 @@ const displayPhotographerTri = (
   currentIdIndex
 ) => {
   const btnTri = document.getElementById("tri");
-  // Constante lié à la partie lightBox
+  // Constante liée à la partie lightBox
   const photoContainerCard = document.querySelectorAll(
     ".photo-container-card img, .photo-container-card video"
   );
@@ -393,7 +376,6 @@ const displayPhotographerTri = (
 
   btnTri.addEventListener("change", (e) => {
     if (e.target.value === "Date") {
-      console.log("on a date");
       const sortDate = photographerMedia.sort((a, b) => {
         const dateA = new Date(a.date);
         const dateB = new Date(b.date);
@@ -405,7 +387,6 @@ const displayPhotographerTri = (
       photoContainer.innerHTML = null;
       injectHtmlPhotographer(sortDate, responseJS, currentIdIndex);
     } else if (e.target.value === "Titre") {
-      console.log("on a titre");
       const sortTitle = photographerMedia.sort((a, b) => {
         if (a.title < b.title) {
           return -1;
@@ -420,7 +401,6 @@ const displayPhotographerTri = (
       photoContainer.innerHTML = null;
       injectHtmlPhotographer(sortTitle, responseJS, currentIdIndex);
     } else if (e.target.value === "Popularité") {
-      console.log("on a popularité");
       const sortLike = photographerMedia.sort((a, b) => b.likes - a.likes);
       console.log("sortLike", sortLike);
       photoContainer.innerHTML = null;
@@ -451,12 +431,10 @@ const displayPhotographerTri = (
       };
 
       const focusEvent = () => {
-        console.log("image ou video est FOCUS!");
         document.addEventListener("keydown", keyDownEvent);
       };
 
       const blurEventRemove = () => {
-        console.log("REMOVE l'envent listener");
         document.removeEventListener("keydown", keyDownEvent);
       };
 
@@ -514,12 +492,10 @@ const displayPhotographerLightbox = (
     };
 
     const focusEvent = () => {
-      console.log("image ou video est FOCUS!");
       document.addEventListener("keydown", keyDownEvent);
     };
 
     const blurEventRemove = () => {
-      console.log("REMOVE l'envent listener");
       document.removeEventListener("keydown", keyDownEvent);
     };
 
@@ -539,8 +515,6 @@ const displayPhotographerContact = (responseJS, currentIdIndex) => {
     <h2>Contactez-moi <br> ${responseJS.photographers[currentIdIndex].name}</h2>
                     <img src="assets/icons/close.svg" tabindex="0" type="button" aria-label="fermer le formulaire de contact" id="closeBtn"
                         onclick="closeModal()" />`;
-
-  // END
 };
 
 async function init() {
@@ -549,8 +523,7 @@ async function init() {
   const responseJS = await getPhotographers();
 
   const currentIdIndex = currentIdIndexFunction(responseJS);
-  console.log("TOTO", responseJS.photographers);
-  //   displayData(photographers);
+
   displayPhotographerContact(responseJS, currentIdIndex);
   currentIdIndexFunction(responseJS);
   displayProfileHeader(responseJS, currentIdIndex);

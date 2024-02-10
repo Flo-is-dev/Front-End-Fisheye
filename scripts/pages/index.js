@@ -4,9 +4,6 @@ async function getPhotographers() {
     // Code a exectué après reception de la réponse
     // Conversion de la réponse au format javascript
     const responseJS = await responseJSON.json();
-    // let photographers = responseJS.photographers;
-
-    console.log(responseJS, "objet javascript");
 
     return responseJS;
   } catch (error) {
@@ -14,25 +11,21 @@ async function getPhotographers() {
   }
 
   // et bien retourner le tableau photographers seulement une fois récupéré
-  return {
-    // photographers: [...photographers, ...photographers, ...photographers],
-  };
+  return {};
 }
 
-// ----------------------------------------------------------------------
 // Création d'une fonction displayPhotographer(responseJS) qui utilise le responseJS obtenu via le fetch
 
 const displayPhotographer = (responseJS) => {
   console.log(responseJS.photographers);
 
   for (let i = 0; i <= responseJS.photographers.length - 1; i++) {
-    // let respPhoto = responseJS.photographer[i]; // responseJS.photographers
     let name = responseJS.photographers[i].name;
 
-    // Fonction pour mettre le nom des photographes au bon format (txt collé) pour l'appel d'image (avec destructuring)
+    // Fonction pour mettre le nom des photographes au bon format pour l'appel d'image (avec destructuring)
     const joinName = (str) => {
       let newName = str.replaceAll("-", "").split(" ");
-      //   console.log(newName);
+
       let [n, p] = newName;
       return [...n].join("") + [...p].join("");
     };
@@ -68,8 +61,7 @@ async function displayData(photographers) {
 async function init() {
   // Récupère les datas des photographes
   const responseJS = await getPhotographers();
-  //!   Commenter cette ligne enlève le message d'errreur (voir pk?)
-  //   displayData(responseJS.photographers);
+
   displayPhotographer(responseJS);
 }
 
