@@ -6,7 +6,7 @@ const MediaFactory = (media, photographerFirstName) => {
       MediaDisplay() {
         return /*html*/ ` <div class="photo-container-card">
             
-                    <img src="../../assets/photographers/${photographerFirstName}/${media.image}" alt="photo nommée ${media.title}" role="link" aria-label="voir la photo ${media.title} en pleine écran" tabindex=0 />
+                    <img src="./assets/photographers/${photographerFirstName}/${media.image}" alt="photo nommée ${media.title}" role="link" aria-label="voir la photo ${media.title} en pleine écran" tabindex=0 />
                 
                 <div class="photo-card-info" aria-label="titre de la photo et nombre de like">
                 <p>${media.title}</p>
@@ -26,7 +26,7 @@ const MediaFactory = (media, photographerFirstName) => {
         return /*html*/ `<div class="photo-container-card">
   
                 <video width="100%" role="link" aria-label="voir la video ${media.title} en pleine écran" tabindex=0> 
-                <source src="../../assets/photographers/${photographerFirstName}/${media.video}" type="video/webm" />
+                <source src="./assets/photographers/${photographerFirstName}/${media.video}" type="video/webm" />
                 </video>
         
             <div class="photo-card-info" aria-label="titre de la photo et nombre de like">

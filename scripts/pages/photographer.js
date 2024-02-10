@@ -9,7 +9,7 @@ console.log("l'id est", param);
 
 async function getPhotographers() {
   try {
-    const responseJSON = await fetch("../../data/photographers.json");
+    const responseJSON = await fetch("./data/photographers.json");
     // Code a exectué après reception de la réponse
     // Conversion de la réponse au format javascript
     const responseJS = await responseJSON.json();
@@ -225,7 +225,7 @@ const openLightBox = (
                 </div>
                     <div class="lightbox-photo">
                         <video controls width="100%" role="media" aria-label="current video" >
-                        <source src="../../assets/photographers/${
+                        <source src="./assets/photographers/${
                           responseJS.photographers[currentIdIndex].name.split(
                             " "
                           )[0]
@@ -249,7 +249,7 @@ const openLightBox = (
                 <i class="fa-solid fa-chevron-right"></i>
                 </div>
                     <div class="lightbox-photo">
-                    <img src="../../assets/photographers/${
+                    <img src="./assets/photographers/${
                       responseJS.photographers[currentIdIndex].name.split(
                         " "
                       )[0]

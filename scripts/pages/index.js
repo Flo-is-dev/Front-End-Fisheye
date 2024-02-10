@@ -1,6 +1,6 @@
 async function getPhotographers() {
   try {
-    const responseJSON = await fetch("../../data/photographers.json");
+    const responseJSON = await fetch("./data/photographers.json");
     // Code a exectué après reception de la réponse
     // Conversion de la réponse au format javascript
     const responseJS = await responseJSON.json();
@@ -45,7 +45,7 @@ const displayPhotographer = (responseJS) => {
     photographerSection.innerHTML += /*html*/ `
           <article aria-describedby="carte du photographe ${responseJS.photographers[i].name}">
               <a href="/photographer.html?id=${responseJS.photographers[i].id}" role="link" aria-label="Voir le profil de ${responseJS.photographers[i].name}">
-                  <img src="../../assets/photographers/Photographers-ID-Photos/${namePhotographe}.jpg"  alt="photo de ${responseJS.photographers[i].name}">
+                  <img src="./assets/photographers/Photographers-ID-Photos/${namePhotographe}.jpg"  alt="photo de ${responseJS.photographers[i].name}">
                   <h2>${responseJS.photographers[i].name}</h2>
               </a>
               <h3>${responseJS.photographers[i].city},${responseJS.photographers[i].country}</h3>
