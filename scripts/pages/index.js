@@ -1,6 +1,6 @@
 async function getPhotographers() {
   try {
-    const responseJSON = await fetch("./data/photographers.json");
+    const responseJSON = await fetch("../../data/photographers.json");
     // Code a exectué après reception de la réponse
     // Conversion de la réponse au format javascript
     const responseJS = await responseJSON.json();
